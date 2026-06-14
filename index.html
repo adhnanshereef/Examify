@@ -27,9 +27,7 @@
   --q-answered: #1b5e20;
   --q-marked: #4a148c;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   background: var(--bg);
   color: var(--text-primary);
@@ -38,37 +36,20 @@ body {
   overflow-x: hidden;
   position: relative;
 }
-
-/* Background glow spheres */
-body::before, body::after, .glow-third {
-  content: '';
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
+/* ===== GLOW SPHERES ===== */
+.glow-sphere {
+  position: fixed; border-radius: 50%;
+  pointer-events: none; z-index: 0;
 }
-body::before {
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%);
-  top: -200px; left: -200px;
-  filter: blur(60px);
-}
-body::after {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(63,99,255,0.08) 0%, transparent 70%);
-  bottom: -150px; right: -150px;
-  filter: blur(80px);
-}
-.glow-third {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(148,99,255,0.07) 0%, transparent 70%);
-  bottom: 40%; left: -100px;
-  filter: blur(70px);
-}
+.gs1 { width:650px;height:650px;top:-220px;left:-220px;background:radial-gradient(circle,rgba(108,99,255,0.13) 0%,transparent 70%);filter:blur(60px); }
+.gs2 { width:520px;height:520px;bottom:-160px;right:-160px;background:radial-gradient(circle,rgba(63,99,255,0.09) 0%,transparent 70%);filter:blur(80px); }
+.gs3 { width:420px;height:420px;bottom:38%;left:-110px;background:radial-gradient(circle,rgba(148,99,255,0.08) 0%,transparent 70%);filter:blur(70px); }
+.gs4 { width:340px;height:340px;top:30%;right:-80px;background:radial-gradient(circle,rgba(200,80,255,0.07) 0%,transparent 70%);filter:blur(65px); }
+.gs5 { width:280px;height:280px;top:60%;left:40%;background:radial-gradient(circle,rgba(80,140,255,0.06) 0%,transparent 70%);filter:blur(75px); }
+.gs6 { width:200px;height:200px;top:10%;left:55%;background:radial-gradient(circle,rgba(120,99,255,0.05) 0%,transparent 70%);filter:blur(50px); }
 
 #app { position: relative; z-index: 1; min-height: 100vh; }
 
-/* ===================== UTILITIES ===================== */
 .page { display: none; }
 .page.active { display: block; }
 
@@ -79,467 +60,246 @@ body::after {
   -webkit-backdrop-filter: blur(12px);
   border-radius: 14px;
 }
-
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 22px;
-  border: none; border-radius: 10px;
-  font-size: 14px; font-weight: 500;
-  cursor: pointer; transition: all 0.2s;
-  font-family: inherit;
+  padding: 10px 22px; border: none; border-radius: 10px;
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  transition: all 0.2s; font-family: inherit;
 }
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-}
+.btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { background: #7c74ff; box-shadow: 0 0 20px var(--accent-glow); }
-.btn-ghost {
-  background: var(--surface);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-}
+.btn-ghost { background: var(--surface); color: var(--text-primary); border: 1px solid var(--border); }
 .btn-ghost:hover { background: var(--surface-hover); }
 .btn-danger { background: var(--danger); color: #fff; }
 .btn-success { background: var(--success); color: #fff; }
 .btn-sm { padding: 7px 14px; font-size: 13px; }
 .btn-lg { padding: 13px 30px; font-size: 15px; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.tag {
-  display: inline-block; padding: 3px 10px;
-  border-radius: 20px; font-size: 12px; font-weight: 500;
-}
+.tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
 .tag-single { background: rgba(108,99,255,0.2); color: #a89cff; }
 .tag-multiple { background: rgba(255,152,0,0.2); color: #ffb74d; }
 .tag-numerical { background: rgba(76,175,80,0.2); color: #81c784; }
-
 .serif { font-family: 'DM Serif Display', Georgia, serif; }
-
 input[type="text"], input[type="number"], textarea, select {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-primary);
-  font-family: inherit;
-  padding: 10px 14px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-  width: 100%;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text-primary); font-family: inherit; padding: 10px 14px;
+  font-size: 14px; outline: none; transition: border-color 0.2s; width: 100%;
 }
-input:focus, textarea:focus, select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
-}
-
-.toggle-switch {
-  position: relative; display: inline-block;
-  width: 42px; height: 24px;
-}
+input:focus, textarea:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.toggle-switch { position: relative; display: inline-block; width: 42px; height: 24px; }
 .toggle-switch input { opacity: 0; width: 0; height: 0; }
 .toggle-slider {
-  position: absolute; inset: 0;
-  background: var(--surface-hover);
-  border-radius: 24px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: 0.3s;
+  position: absolute; inset: 0; background: var(--surface-hover);
+  border-radius: 24px; border: 1px solid var(--border); cursor: pointer; transition: 0.3s;
 }
 .toggle-slider::before {
-  content: '';
-  position: absolute;
-  height: 18px; width: 18px;
-  left: 2px; bottom: 2px;
-  background: var(--text-secondary);
-  border-radius: 50%;
-  transition: 0.3s;
+  content: ''; position: absolute; height: 18px; width: 18px;
+  left: 2px; bottom: 2px; background: var(--text-secondary); border-radius: 50%; transition: 0.3s;
 }
 .toggle-switch input:checked + .toggle-slider { background: var(--accent); border-color: var(--accent); }
 .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); background: #fff; }
-
-.section-title {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 22px; margin-bottom: 20px;
-}
+.section-title { font-family: 'DM Serif Display', Georgia, serif; font-size: 22px; margin-bottom: 20px; }
 label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 6px; }
 
-.error-msg { color: var(--danger); font-size: 13px; margin-top: 6px; }
-.success-msg { color: var(--success); font-size: 13px; margin-top: 6px; }
-
-/* ===================== PAGE 1 — HOME ===================== */
-#page-home {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 60px 24px;
-}
+/* ===== HOME ===== */
+#page-home { max-width: 740px; margin: 0 auto; padding: 60px 24px; }
 .home-header { text-align: center; margin-bottom: 60px; }
 .home-logo {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 44px;
+  font-family: 'DM Serif Display', Georgia, serif; font-size: 48px;
   background: linear-gradient(135deg, #fff 40%, var(--accent));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 10px;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px;
 }
 .home-sub { color: var(--text-secondary); font-size: 15px; }
 .home-actions { display: flex; gap: 12px; justify-content: center; margin-bottom: 50px; }
-
-.exam-list-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 16px;
-}
+.exam-list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .exam-list-title { font-size: 13px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; }
-
-.exam-card {
-  padding: 20px 22px;
-  margin-bottom: 12px;
-  display: flex; align-items: center; gap: 16px;
-}
-.exam-card-info { flex: 1; }
-.exam-card-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-.exam-card-meta { font-size: 12px; color: var(--text-secondary); }
-.exam-card-score {
-  text-align: right; min-width: 80px;
-}
-.exam-score-val {
-  font-size: 22px; font-weight: 700;
-  color: var(--accent);
-}
-.exam-score-label { font-size: 11px; color: var(--text-secondary); }
-.exam-card-actions { display: flex; gap: 8px; }
-
-.empty-state {
-  text-align: center; padding: 60px 20px;
-  color: var(--text-secondary);
-}
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
 .empty-state-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
 
-/* ===================== PAGE 2 — SETUP ===================== */
-#page-setup { max-width: 760px; margin: 0 auto; padding: 50px 24px; }
-.setup-header { margin-bottom: 40px; }
-.setup-steps { display: flex; gap: 8px; margin-bottom: 40px; }
-.step-pill {
-  padding: 6px 16px; border-radius: 20px;
-  font-size: 13px; font-weight: 500;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text-secondary);
-  transition: all 0.2s;
+/* exam group = one template with multiple takes */
+.exam-group { margin-bottom: 18px; }
+.exam-group-header {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px;
+  align-items: center;
+  padding: 18px 22px; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; transition: all 0.2s; user-select: none;
 }
-.step-pill.active {
-  background: var(--accent-glow);
-  border-color: var(--accent);
-  color: #a89cff;
+.exam-group-header:hover { background: var(--surface-hover); }
+.exam-group-header.open { border-radius: 14px 14px 0 0; border-bottom-color: transparent; }
+.exam-group-header > div:first-child { min-width: 0; }
+.exam-group-header > div:last-child { justify-self: end; }
+.exam-group-id { font-size: 11px; color: var(--text-secondary); font-family: monospace; }
+.exam-group-name { font-size: 16px; font-weight: 600; flex: 1; }
+.exam-group-meta { font-size: 12px; color: var(--text-secondary); }
+.exam-group-actions { display: flex; gap: 8px; align-items: center; justify-self: end; }
+.exam-group-chevron { transition: transform 0.2s; }
+.exam-group-header.open .exam-group-chevron { transform: rotate(180deg); }
+.exam-takes {
+  display: none; flex-direction: column;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border); border-top: none;
+  border-radius: 0 0 14px 14px;
+  overflow: hidden;
 }
-.step-pill.done { color: var(--success); border-color: rgba(76,175,80,0.3); background: rgba(76,175,80,0.08); }
+.exam-takes.open { display: flex; }
+.exam-take-row {
+  display: grid; grid-template-columns: 84px minmax(0, 1fr) 84px auto;
+  align-items: center; column-gap: 14px;
+  padding: 14px 22px; border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.exam-take-row:last-child { border-bottom: none; }
+.exam-take-row:hover { background: var(--surface-hover); }
+.take-num { font-size: 11px; color: var(--text-secondary); }
+.take-main { min-width: 0; }
+.take-date { font-size: 13px; }
+.take-score-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.take-score { font-size: 20px; font-weight: 700; color: var(--accent); line-height: 1; }
+.take-score-lbl { font-size: 11px; color: var(--text-secondary); margin-top: 3px; }
+.take-actions { display: flex; gap: 6px; }
+.take-time { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
 
+.icon-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.icon-btn svg { width: 14px; height: 14px; }
+.delete-icon-btn {
+  background: transparent;
+  color: #ff5a52;
+  border: 1px solid rgba(255, 90, 82, 0.45);
+}
+.delete-icon-btn:hover {
+  background: rgba(255, 90, 82, 0.16);
+  border-color: rgba(255, 90, 82, 0.85);
+}
+
+.icon-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.icon-btn svg { width: 14px; height: 14px; }
+
+/* ===== SETUP ===== */
+#page-setup { max-width: 760px; margin: 0 auto; padding: 50px 24px; }
+.setup-steps { display: flex; gap: 8px; margin-bottom: 40px; }
+.step-pill { padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; border: 1px solid var(--border); background: var(--surface); color: var(--text-secondary); transition: all 0.2s; }
+.step-pill.active { background: var(--accent-glow); border-color: var(--accent); color: #a89cff; }
+.step-pill.done { color: var(--success); border-color: rgba(76,175,80,0.3); background: rgba(76,175,80,0.08); }
 .setup-step { display: none; }
 .setup-step.active { display: block; }
-
-.json-area {
-  font-family: 'Courier New', monospace;
-  font-size: 13px;
-  min-height: 280px;
-  resize: vertical;
-  tab-size: 2;
-}
-
+.json-area { font-family: 'Courier New', monospace; font-size: 13px; min-height: 280px; resize: vertical; tab-size: 2; }
 .drop-zone {
-  border: 2px dashed var(--border);
-  border-radius: 12px;
-  padding: 32px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: var(--text-secondary);
-  margin-bottom: 16px;
+  border: 2px dashed var(--border); border-radius: 12px; padding: 32px;
+  text-align: center; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); margin-bottom: 16px;
 }
-.drop-zone:hover, .drop-zone.drag-over {
-  border-color: var(--accent);
-  background: var(--accent-glow);
-  color: var(--text-primary);
-}
+.drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: var(--accent-glow); color: var(--text-primary); }
 .drop-zone input[type="file"] { display: none; }
-
 .validation-result { margin-top: 12px; padding: 14px; border-radius: 10px; }
 .validation-result.valid { background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.3); }
 .validation-result.invalid { background: rgba(244,67,54,0.1); border: 1px solid rgba(244,67,54,0.3); }
 .validation-result ul { padding-left: 18px; margin-top: 8px; }
 .validation-result li { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
-
-.ai-guide-toggle {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  cursor: pointer;
-  margin-top: 20px;
-  user-select: none;
-  font-size: 14px; color: var(--text-secondary);
-}
+.ai-guide-toggle { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; margin-top: 20px; user-select: none; font-size: 14px; color: var(--text-secondary); }
 .ai-guide-toggle:hover { background: var(--surface-hover); }
 .ai-guide-content { display: none; margin-top: 2px; padding: 16px; border-radius: 0 0 10px 10px; border: 1px solid var(--border); border-top: none; background: var(--surface); }
 .ai-guide-content.open { display: block; }
 .ai-prompt-text { font-size: 13px; color: var(--text-secondary); line-height: 1.7; font-style: italic; }
-
 .time-mode-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.time-mode-pill {
-  padding: 8px 18px; border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  font-size: 14px; cursor: pointer;
-  transition: all 0.2s;
-  color: var(--text-secondary);
-}
-.time-mode-pill.active {
-  background: var(--accent-glow);
-  border-color: var(--accent);
-  color: #a89cff;
-}
+.time-mode-pill { padding: 8px 18px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); font-size: 14px; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); }
+.time-mode-pill.active { background: var(--accent-glow); border-color: var(--accent); color: #a89cff; }
 .time-input-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
-
-.settings-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--border);
-}
+.settings-row { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--border); }
 .settings-row:last-child { border-bottom: none; }
 .settings-row-info h4 { font-size: 15px; margin-bottom: 3px; }
 .settings-row-info p { font-size: 12px; color: var(--text-secondary); }
-
 .setup-footer { margin-top: 30px; display: flex; gap: 12px; align-items: center; justify-content: flex-end; }
 
-/* ===================== PAGE 3 — EXAM ===================== */
-#page-exam {
-  display: none;
-  height: 100vh;
-  flex-direction: column;
-}
+/* ===== EXAM ===== */
+#page-exam { display: none; height: 100vh; flex-direction: column; }
 #page-exam.active { display: flex; }
-
-.exam-topbar {
-  display: flex; align-items: center; gap: 16px;
-  padding: 12px 20px;
-  background: rgba(0,0,0,0.8);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-  flex-shrink: 0;
-}
-.exam-name-bar { font-size: 15px; font-weight: 600; flex: 1; }
+.exam-topbar { display: flex; align-items: center; gap: 16px; padding: 12px 20px; background: rgba(0,0,0,0.85); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); flex-shrink: 0; flex-wrap: wrap; }
+.exam-name-bar { font-size: 15px; font-weight: 600; flex: 1; min-width: 120px; }
 .section-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-.section-tab {
-  padding: 5px 14px; border-radius: 6px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  font-size: 13px; cursor: pointer;
-  color: var(--text-secondary);
-  transition: all 0.2s;
-}
+.section-tab { padding: 5px 14px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); font-size: 13px; cursor: pointer; color: var(--text-secondary); transition: all 0.2s; }
 .section-tab.active { background: var(--accent-glow); border-color: var(--accent); color: #a89cff; }
-
-.timer-display {
-  font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums;
-  padding: 6px 16px; border-radius: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  min-width: 90px; text-align: center;
-}
+.timer-display { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; padding: 6px 16px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); min-width: 90px; text-align: center; }
 .timer-display.warning { color: var(--warning); border-color: var(--warning); }
 .timer-display.danger { color: var(--danger); border-color: var(--danger); animation: pulse 1s infinite; }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-.exam-body {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
-/* Left panel */
-.exam-left {
-  flex: 1;
-  overflow-y: auto;
-  padding: 28px 32px;
-  border-right: 1px solid var(--border);
-}
+.exam-body { display: flex; flex: 1; overflow: hidden; }
+.exam-left { flex: 1; overflow-y: auto; padding: 28px 32px; border-right: 1px solid var(--border); }
 .question-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
 .question-number { font-size: 13px; color: var(--text-secondary); }
-
-.question-text {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 18px; line-height: 1.7;
-  margin-bottom: 24px;
-}
+.question-text { font-family: 'DM Serif Display', Georgia, serif; font-size: 18px; line-height: 1.7; margin-bottom: 24px; }
 .question-diagram { max-width: 100%; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border); }
-
-/* Options */
 .options-grid { display: flex; flex-direction: column; gap: 10px; }
-.option-btn {
-  display: flex; align-items: flex-start; gap: 14px;
-  padding: 14px 18px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: left;
-  color: var(--text-primary);
-}
+.option-btn { display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s; text-align: left; color: var(--text-primary); }
 .option-btn:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.15); }
 .option-btn.selected { background: var(--accent-glow); border-color: var(--accent); }
 .option-btn.correct { background: rgba(76,175,80,0.15); border-color: var(--success); }
 .option-btn.wrong { background: rgba(244,67,54,0.12); border-color: var(--danger); }
-.option-id {
-  font-weight: 700; color: var(--accent); font-size: 15px;
-  flex-shrink: 0; padding-top: 1px;
-}
+.option-id { font-weight: 700; color: var(--accent); font-size: 15px; flex-shrink: 0; padding-top: 1px; }
 .option-text { font-size: 15px; line-height: 1.6; }
-
-/* Numerical keypad */
-.numerical-display {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 18px;
-  font-size: 24px; font-family: monospace;
-  margin-bottom: 16px;
-  min-height: 56px;
-}
-.numpad {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  max-width: 300px;
-}
-.numpad-btn {
-  padding: 12px; border-radius: 8px;
-  background: var(--surface); border: 1px solid var(--border);
-  color: var(--text-primary); font-size: 16px;
-  cursor: pointer; transition: all 0.2s;
-  font-family: monospace;
-}
+.numerical-display { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; font-size: 24px; font-family: monospace; margin-bottom: 16px; min-height: 56px; }
+.numpad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 300px; }
+.numpad-btn { padding: 12px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); color: var(--text-primary); font-size: 16px; cursor: pointer; transition: all 0.2s; font-family: monospace; }
 .numpad-btn:hover { background: var(--surface-hover); }
 .numpad-btn.special { color: var(--warning); }
 .numpad-btn.clear { color: var(--danger); }
+.question-actions { display: flex; gap: 10px; flex-wrap: wrap; padding: 16px 32px; border-top: 1px solid var(--border); flex-shrink: 0; }
 
-/* Question actions */
-.question-actions {
-  display: flex; gap: 10px; flex-wrap: wrap;
-  padding: 16px 32px;
-  border-top: 1px solid var(--border);
-  flex-shrink: 0;
-}
-
-/* Right panel — palette */
-.exam-right {
-  width: 260px;
-  overflow-y: auto;
-  padding: 20px 16px;
-  flex-shrink: 0;
-}
-.palette-legend { margin-bottom: 16px; }
-.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
-.legend-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
-
-.palette-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-}
-.palette-btn {
-  aspect-ratio: 1;
-  border: none; border-radius: 6px;
-  font-size: 12px; font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  color: #fff;
-}
-.palette-btn:hover { transform: scale(1.1); }
+/* Right palette */
+.exam-right { width: 270px; overflow-y: auto; padding: 16px 14px; flex-shrink: 0; }
+.palette-section-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; margin-top: 14px; }
+.palette-section-label:first-child { margin-top: 0; }
+.palette-legend { margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text-secondary); margin-bottom: 5px; }
+.legend-dot { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; }
+.palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 4px; }
+.palette-btn { aspect-ratio: 1; border: none; border-radius: 5px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.15s; position: relative; color: #fff; }
+.palette-btn:hover { transform: scale(1.12); }
 .palette-btn.q-not-visited { background: var(--q-not-visited); color: var(--text-secondary); }
 .palette-btn.q-not-answered { background: var(--q-not-answered); }
 .palette-btn.q-answered { background: var(--q-answered); }
 .palette-btn.q-marked { background: var(--q-marked); }
-.palette-btn.q-answered-marked {
-  background: var(--q-marked);
-}
-.palette-btn.q-answered-marked::after {
-  content: '';
-  position: absolute;
-  bottom: 2px; right: 2px;
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--success);
-}
+.palette-btn.q-answered-marked { background: var(--q-marked); }
+.palette-btn.q-answered-marked::after { content: ''; position: absolute; bottom: 2px; right: 2px; width: 5px; height: 5px; border-radius: 50%; background: var(--success); }
 .palette-btn.current { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-.palette-summary {
-  margin-top: 16px; padding-top: 16px;
-  border-top: 1px solid var(--border);
-  font-size: 12px; color: var(--text-secondary);
-}
+.palette-summary { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-secondary); }
 .summary-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
 .summary-val { color: var(--text-primary); font-weight: 600; }
+.submit-btn-wrap { margin-top: 16px; }
 
-.submit-btn-wrap { margin-top: 20px; }
-
-/* ===================== MODALS ===================== */
-.modal-overlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
-}
+/* Modals */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; }
 .modal-overlay.open { display: flex; }
-.modal {
-  background: #0d0d0d;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 32px;
-  max-width: 480px;
-  width: 90%;
-}
+.modal { background: #0d0d0d; border: 1px solid var(--border); border-radius: 16px; padding: 32px; max-width: 480px; width: 90%; max-height: 90vh; overflow-y: auto; }
 .modal h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 22px; margin-bottom: 12px; }
 .modal p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
-
-.timer-warning-overlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(244,67,54,0.15);
-  z-index: 999;
-  align-items: center; justify-content: center;
-  flex-direction: column;
-}
+.timer-warning-overlay { display: none; position: fixed; inset: 0; background: rgba(244,67,54,0.15); z-index: 999; align-items: center; justify-content: center; flex-direction: column; }
 .timer-warning-overlay.open { display: flex; }
-.timer-warning-num {
-  font-size: 120px; font-weight: 900;
-  color: var(--danger);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
+.timer-warning-num { font-size: 120px; font-weight: 900; color: var(--danger); font-variant-numeric: tabular-nums; line-height: 1; }
 .timer-warning-text { font-size: 20px; color: var(--text-secondary); margin-top: 10px; }
 
-/* ===================== PAGE 4 — ANALYSIS ===================== */
-#page-analysis { max-width: 900px; margin: 0 auto; padding: 50px 24px 80px; }
-
-.score-card {
-  padding: 32px;
-  margin-bottom: 30px;
-  text-align: center;
-}
-.score-big {
-  font-family: 'DM Serif Display', Georgia, serif;
-  font-size: 72px; font-weight: 400;
-  background: linear-gradient(135deg, #fff, var(--accent));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-  margin-bottom: 8px;
-}
+/* Analysis */
+#page-analysis { max-width: 920px; margin: 0 auto; padding: 50px 24px 80px; }
+.score-card { padding: 32px; margin-bottom: 30px; text-align: center; }
+.score-big { font-family: 'DM Serif Display', Georgia, serif; font-size: 72px; font-weight: 400; background: linear-gradient(135deg, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 8px; }
 .score-label { color: var(--text-secondary); font-size: 15px; }
 .score-stats { display: flex; gap: 24px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
 .stat-item { text-align: center; }
@@ -548,14 +308,13 @@ label { font-size: 13px; color: var(--text-secondary); display: block; margin-bo
 .stat-item.correct .stat-val { color: var(--success); }
 .stat-item.wrong .stat-val { color: var(--danger); }
 .stat-item.skip .stat-val { color: var(--text-secondary); }
-
+.stat-item.time .stat-val { color: #64b5f6; }
 .section-breakdown { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 14px; margin-bottom: 30px; }
 .section-card { padding: 18px 20px; }
 .section-card-name { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
-.section-card-stats { display: flex; gap: 16px; }
+.section-card-stats { display: flex; gap: 12px; flex-wrap: wrap; }
 .sc-stat { font-size: 12px; color: var(--text-secondary); }
 .sc-stat span { display: block; font-size: 18px; font-weight: 700; color: var(--text-primary); }
-
 .review-list { display: flex; flex-direction: column; gap: 16px; }
 .review-card { padding: 22px 24px; }
 .review-card-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
@@ -569,119 +328,108 @@ label { font-size: 13px; color: var(--text-secondary); display: block; margin-bo
 .review-answers .your { margin-bottom: 4px; }
 .review-answers .correct-a { color: var(--success); }
 .review-answers .wrong-a { color: var(--danger); }
+.analysis-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; flex-wrap: wrap; gap: 10px; }
 
-.analysis-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
+/* time chart in analysis */
+.time-bar-wrap { margin-top: 6px; }
+.time-bar-bg { background: rgba(255,255,255,0.06); border-radius: 4px; height: 6px; overflow: hidden; }
+.time-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #a89cff); border-radius: 4px; transition: width 0.5s; }
 
-/* scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .exam-right { display: none; }
-  .exam-topbar { flex-wrap: wrap; }
-  .section-tabs { display: none; }
-}
-
-/* Toast */
-.toast {
-  position: fixed; bottom: 24px; right: 24px;
-  background: #1a1a2e;
-  border: 1px solid var(--accent);
-  border-radius: 10px;
-  padding: 12px 20px;
-  font-size: 14px;
-  z-index: 9999;
-  transform: translateY(80px);
-  opacity: 0;
-  transition: all 0.3s;
-}
+.toast { position: fixed; bottom: 24px; right: 24px; background: #1a1a2e; border: 1px solid var(--accent); border-radius: 10px; padding: 12px 20px; font-size: 14px; z-index: 9999; transform: translateY(80px); opacity: 0; transition: all 0.3s; }
 .toast.show { transform: translateY(0); opacity: 1; }
 
-/* Marking config */
-.marking-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 8px; }
-.marking-item label { font-size: 11px; }
+@media (max-width: 768px) {
+  .exam-right { display: none; }
+  .section-tabs { display: none; }
+}
 </style>
 </head>
 <body>
-<div class="glow-third"></div>
+
+<div class="glow-sphere gs1"></div>
+<div class="glow-sphere gs2"></div>
+<div class="glow-sphere gs3"></div>
+<div class="glow-sphere gs4"></div>
+<div class="glow-sphere gs5"></div>
+<div class="glow-sphere gs6"></div>
 
 <div id="app">
 
-<!-- ===================== HOME ===================== -->
+<!-- HOME -->
 <div id="page-home" class="page active">
-  <div class="home-header">
-    <div class="home-logo">Examify</div>
-    <div class="home-sub">JEE Advanced Mock Platform — Practice with precision</div>
+  <div style="max-width:740px;margin:0 auto;padding:60px 24px">
+    <div class="home-header">
+      <div class="home-logo">Examify</div>
+      <div class="home-sub">JEE Advanced Mock Platform — Practice with precision</div>
+    </div>
+    <div class="home-actions">
+      <button class="btn btn-primary btn-lg" onclick="goToSetup()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Exam
+      </button>
+      <button class="btn btn-ghost btn-lg" onclick="triggerImport()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Import
+      </button>
+      <input type="file" id="import-file-input" accept=".json" style="display:none" onchange="handleImportFile(event)">
+    </div>
+    <div class="exam-list-header">
+      <span class="exam-list-title">Your Exams</span>
+      <button class="btn btn-ghost btn-sm" onclick="exportAllExams()">Export All</button>
+    </div>
+    <div id="exam-history-list"></div>
   </div>
-  <div class="home-actions">
-    <button class="btn btn-primary btn-lg" onclick="goToSetup()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      New Exam
-    </button>
-  </div>
-
-  <div class="exam-list-header">
-    <span class="exam-list-title">Previous Exams</span>
-    <button class="btn btn-ghost btn-sm" onclick="exportAllExams()">Export All</button>
-  </div>
-  <div id="exam-history-list"></div>
 </div>
 
-<!-- ===================== SETUP ===================== -->
+<!-- SETUP -->
 <div id="page-setup" class="page">
-  <div class="setup-header">
-    <button class="btn btn-ghost btn-sm" onclick="showPage('home')" style="margin-bottom:20px">← Back</button>
-    <h1 class="serif" style="font-size:32px">Setup Exam</h1>
-  </div>
-  <div class="setup-steps">
-    <div class="step-pill active" id="step-pill-1">1. Import Questions</div>
-    <div class="step-pill" id="step-pill-2">2. Settings</div>
-  </div>
-
-  <!-- Step 1 -->
-  <div class="setup-step active" id="setup-step-1">
-    <div style="margin-bottom:20px">
-      <label>Exam Name</label>
-      <input type="text" id="exam-name-input" placeholder="e.g., JEE Advanced 2024 Paper 1">
+  <div style="max-width:760px;margin:0 auto;padding:50px 24px">
+    <button class="btn btn-ghost btn-sm" onclick="showPage('home');loadHomeHistory()" style="margin-bottom:20px">← Back</button>
+    <h1 class="serif" style="font-size:32px;margin-bottom:30px">Setup Exam</h1>
+    <div class="setup-steps">
+      <div class="step-pill active" id="step-pill-1">1. Import Questions</div>
+      <div class="step-pill" id="step-pill-2">2. Settings</div>
     </div>
 
-    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()"
-      ondragover="event.preventDefault();this.classList.add('drag-over')"
-      ondragleave="this.classList.remove('drag-over')"
-      ondrop="handleFileDrop(event)">
-      <input type="file" id="file-input" accept=".json" onchange="handleFileInput(event)">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:10px;opacity:0.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      <div>Drop JSON file here or <span style="color:var(--accent)">click to browse</span></div>
-      <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Supports .json files</div>
-    </div>
-
-    <div style="margin-bottom:8px;display:flex;align-items:center;gap:10px">
-      <div style="flex:1;height:1px;background:var(--border)"></div>
-      <span style="font-size:13px;color:var(--text-secondary)">or paste JSON</span>
-      <div style="flex:1;height:1px;background:var(--border)"></div>
-    </div>
-
-    <textarea class="json-area" id="json-textarea" placeholder='[{"section":"Physics","type":"single","questions":[...]}]'
-      oninput="validateJson(this.value)"></textarea>
-
-    <div id="validation-result"></div>
-
-    <!-- AI Prompt Guide -->
-    <div class="ai-guide-toggle" onclick="toggleAiGuide()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      AI Prompt Guide — Generate questions with ChatGPT or Claude
-      <svg id="ai-guide-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;transition:transform 0.2s"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="ai-guide-content" id="ai-guide-content">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <span style="font-size:12px;color:var(--text-secondary)">Copy and paste this into any AI model:</span>
-        <button class="btn btn-ghost btn-sm" onclick="copyAiPrompt()">Copy Prompt</button>
+    <!-- Step 1 -->
+    <div class="setup-step active" id="setup-step-1">
+      <div style="margin-bottom:20px">
+        <label>Exam Name</label>
+        <input type="text" id="exam-name-input" placeholder="e.g., JEE Advanced 2024 Paper 1">
       </div>
-      <div class="ai-prompt-text" id="ai-prompt-text">
-        <pre>[{
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')" ondrop="handleFileDrop(event)">
+        <input type="file" id="file-input" accept=".json" onchange="handleFileInput(event)">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:10px;opacity:0.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <div>Drop JSON file here or <span style="color:var(--accent)">click to browse</span></div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Supports .json question files</div>
+      </div>
+      <div style="margin-bottom:8px;display:flex;align-items:center;gap:10px">
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+        <span style="font-size:13px;color:var(--text-secondary)">or paste JSON</span>
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+      </div>
+      <textarea class="json-area" id="json-textarea" placeholder='[{"section":"Physics","type":"single","questions":[...]}]' oninput="validateJson(this.value)"></textarea>
+      <div id="validation-result"></div>
+      <div class="ai-guide-toggle" onclick="toggleAiGuide()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        AI Prompt Guide — Generate questions with ChatGPT or Claude
+        <svg id="ai-guide-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;transition:transform 0.2s"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ai-guide-content" id="ai-guide-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-size:12px;color:var(--text-secondary)">Copy and paste this into any AI model:</span>
+          <button class="btn btn-ghost btn-sm" onclick="copyAiPrompt()">Copy Prompt</button>
+        </div>
+        <div class="ai-prompt-text" id="ai-prompt-text">
+          <pre>
+[{
   "section": "Section name",
   "type": "single | multiple | numerical",
   "questions": [{
@@ -694,97 +442,84 @@ label { font-size: 13px; color: var(--text-secondary); display: block; margin-bo
       "diagram": "url (optional)"
     }]
   }]
-}]</pre>
-        Generate JEE Advanced questions in the following JSON format. Use KaTeX inline math notation with single dollar signs for inline equations ($x^2 + y^2$) and double dollar signs for block equations ($$\int_0^\infty$$). For single answer MCQ use type 'single' with answer as the correct option_id string. For multiple correct use type 'multiple' with answer as array of option_id strings. For numerical use type 'numerical' with answer as number or decimal string. Include diagram field only if needed as a direct image URL. Make sure all LaTeX is valid KaTeX syntax. Return only the raw JSON array, no explanation, no markdown code fences.</div>
-    </div>
-
-    <div class="setup-footer">
-      <button class="btn btn-ghost" onclick="showPage('home')">Cancel</button>
-      <button class="btn btn-primary" onclick="goToSettingsStep()" id="next-step-btn" disabled>Next: Settings →</button>
-    </div>
-  </div>
-
-  <!-- Step 2 -->
-  <div class="setup-step" id="setup-step-2">
-    <div style="margin-bottom:30px">
-      <h3 class="section-title">Time Mode</h3>
-      <div class="time-mode-pills">
-        <div class="time-mode-pill active" onclick="setTimeMode('total',this)">Total Time</div>
-        <div class="time-mode-pill" onclick="setTimeMode('perq',this)">Per Question</div>
-        <div class="time-mode-pill" onclick="setTimeMode('none',this)">No Limit</div>
+}]
+        </pre>
+          Generate JEE Advanced questions in the following JSON format. Use KaTeX inline math notation with single dollar signs for inline equations ($x^2 + y^2$) and double dollar signs for block equations ($$\int_0^\infty$$). For single answer MCQ use type 'single' with answer as the correct option_id string. For multiple correct use type 'multiple' with answer as array of option_id strings. For numerical use type 'numerical' with answer as number or decimal string. Include diagram field only if needed as a direct image URL. Make sure all LaTeX is valid KaTeX syntax. Return only the raw JSON array, no explanation, no markdown code fences.</div>
       </div>
-      <div id="total-time-input" class="time-input-row">
-        <input type="number" id="total-minutes" placeholder="180" min="1" max="999" style="max-width:120px"> <span style="color:var(--text-secondary);font-size:14px">minutes</span>
-      </div>
-      <div id="perq-time-input" class="time-input-row" style="display:none">
-        <input type="number" id="perq-seconds" placeholder="120" min="10" max="600" style="max-width:120px"> <span style="color:var(--text-secondary);font-size:14px">seconds per question</span>
+      <div class="setup-footer">
+        <button class="btn btn-ghost" onclick="showPage('home');loadHomeHistory()">Cancel</button>
+        <button class="btn btn-primary" onclick="goToSettingsStep()" id="next-step-btn" disabled>Next: Settings →</button>
       </div>
     </div>
 
-    <div class="glass" style="padding:0 20px;margin-bottom:30px">
-      <div class="settings-row">
-        <div class="settings-row-info">
-          <h4>Shuffle Questions</h4>
-          <p>Randomize question order within each section</p>
+    <!-- Step 2 -->
+    <div class="setup-step" id="setup-step-2">
+      <div style="margin-bottom:30px">
+        <h3 class="section-title">Time Mode</h3>
+        <div class="time-mode-pills">
+          <div class="time-mode-pill active" onclick="setTimeMode('total',this)">Total Time</div>
+          <div class="time-mode-pill" onclick="setTimeMode('perq',this)">Per Question</div>
+          <div class="time-mode-pill" onclick="setTimeMode('none',this)">No Limit</div>
         </div>
-        <label class="toggle-switch">
-          <input type="checkbox" id="shuffle-toggle">
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-      <div class="settings-row">
-        <div class="settings-row-info">
-          <h4>Show Answer After Each Question</h4>
-          <p>Review correct answer before moving on (practice mode)</p>
+        <div id="total-time-input" class="time-input-row">
+          <input type="number" id="total-minutes" placeholder="180" min="1" max="999" style="max-width:120px">
+          <span style="color:var(--text-secondary);font-size:14px">minutes</span>
         </div>
-        <label class="toggle-switch">
-          <input type="checkbox" id="show-answer-toggle">
-          <span class="toggle-slider"></span>
-        </label>
+        <div id="perq-time-input" class="time-input-row" style="display:none">
+          <input type="number" id="perq-seconds" placeholder="120" min="10" max="600" style="max-width:120px">
+          <span style="color:var(--text-secondary);font-size:14px">seconds per question</span>
+        </div>
       </div>
-    </div>
-
-    <div style="margin-bottom:30px">
-      <h3 class="section-title">Marking Scheme</h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
-        <div>
-          <label style="margin-bottom:10px;font-size:13px">Single MCQ</label>
-          <div style="display:flex;gap:8px">
-            <div><label style="font-size:11px;color:var(--success)">Correct</label><input type="number" id="mark-single-correct" value="4" style="max-width:70px"></div>
-            <div><label style="font-size:11px;color:var(--danger)">Wrong</label><input type="number" id="mark-single-wrong" value="-1" style="max-width:70px"></div>
+      <div class="glass" style="padding:0 20px;margin-bottom:30px">
+        <div class="settings-row">
+          <div class="settings-row-info"><h4>Shuffle Questions</h4><p>Randomize question order within each section</p></div>
+          <label class="toggle-switch"><input type="checkbox" id="shuffle-toggle"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info"><h4>Show Answer After Each Question</h4><p>Review correct answer before moving on (practice mode)</p></div>
+          <label class="toggle-switch"><input type="checkbox" id="show-answer-toggle"><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+      <div style="margin-bottom:30px">
+        <h3 class="section-title">Marking Scheme</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+          <div>
+            <label style="margin-bottom:10px;font-size:13px">Single MCQ</label>
+            <div style="display:flex;gap:8px">
+              <div><label style="font-size:11px;color:var(--success)">Correct</label><input type="number" id="mark-single-correct" value="4" style="max-width:70px"></div>
+              <div><label style="font-size:11px;color:var(--danger)">Wrong</label><input type="number" id="mark-single-wrong" value="-1" style="max-width:70px"></div>
+            </div>
           </div>
-        </div>
-        <div>
-          <label style="margin-bottom:10px;font-size:13px">Multiple MCQ</label>
-          <div style="display:flex;gap:8px">
-            <div><label style="font-size:11px;color:var(--success)">Correct</label><input type="number" id="mark-multi-correct" value="4" style="max-width:70px"></div>
-            <div><label style="font-size:11px;color:var(--danger)">Wrong</label><input type="number" id="mark-multi-wrong" value="-2" style="max-width:70px"></div>
+          <div>
+            <label style="margin-bottom:10px;font-size:13px">Multiple MCQ</label>
+            <div style="display:flex;gap:8px">
+              <div><label style="font-size:11px;color:var(--success)">Correct</label><input type="number" id="mark-multi-correct" value="4" style="max-width:70px"></div>
+              <div><label style="font-size:11px;color:var(--danger)">Wrong</label><input type="number" id="mark-multi-wrong" value="-2" style="max-width:70px"></div>
+            </div>
           </div>
-        </div>
-        <div>
-          <label style="margin-bottom:10px;font-size:13px">Numerical</label>
-          <div style="display:flex;gap:8px">
-            <div><label style="font-size:11px;color:var(--success)">Correct</label><input type="number" id="mark-num-correct" value="4" style="max-width:70px"></div>
-            <div><label style="font-size:11px;color:var(--danger)">Wrong</label><input type="number" id="mark-num-wrong" value="0" style="max-width:70px"></div>
+          <div>
+            <label style="margin-bottom:10px;font-size:13px">Numerical</label>
+            <div style="display:flex;gap:8px">
+              <div><label style="font-size:11px;color:var(--success)">Correct</label><input type="number" id="mark-num-correct" value="4" style="max-width:70px"></div>
+              <div><label style="font-size:11px;color:var(--danger)">Wrong</label><input type="number" id="mark-num-wrong" value="0" style="max-width:70px"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="setup-footer">
-      <button class="btn btn-ghost" onclick="goBackToImport()">← Back</button>
-      <button class="btn btn-primary btn-lg" onclick="startExam()">Start Exam →</button>
+      <div class="setup-footer">
+        <button class="btn btn-ghost" onclick="goBackToImport()">← Back</button>
+        <button class="btn btn-primary btn-lg" onclick="startExam()">Start Exam →</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ===================== EXAM ===================== -->
+<!-- EXAM -->
 <div id="page-exam" class="page">
   <div class="exam-topbar">
     <div class="exam-name-bar" id="exam-name-bar">Exam</div>
     <div class="section-tabs" id="section-tabs"></div>
     <div class="timer-display" id="timer-display">00:00</div>
-    <button class="btn btn-ghost btn-sm" id="palette-toggle-mobile" onclick="toggleMobilePalette()" style="display:none">☰ Palette</button>
   </div>
   <div class="exam-body">
     <div style="display:flex;flex-direction:column;flex:1;overflow:hidden">
@@ -797,25 +532,21 @@ label { font-size: 13px; color: var(--text-secondary); display: block; margin-bo
         <img class="question-diagram" id="q-diagram" style="display:none">
         <div id="q-input-area"></div>
       </div>
-      <div class="question-actions" id="question-actions">
-        <button class="btn btn-primary" onclick="saveAndNext()">Save &amp; Next</button>
-        <button class="btn btn-ghost" onclick="markForReview()">Mark for Review</button>
-        <button class="btn btn-ghost" onclick="clearResponse()" style="color:var(--danger)">Clear Response</button>
-      </div>
+      <div class="question-actions" id="question-actions"></div>
     </div>
     <div class="exam-right" id="exam-right">
       <div class="palette-legend">
         <div class="legend-item"><div class="legend-dot" style="background:var(--q-not-visited)"></div> Not visited</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--q-not-answered)"></div> Not answered</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--q-answered)"></div> Answered</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--q-marked)"></div> Marked for review</div>
-        <div class="legend-item" style="position:relative">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--q-marked)"></div> Marked</div>
+        <div class="legend-item">
           <div class="legend-dot" style="background:var(--q-marked);position:relative">
-            <div style="position:absolute;bottom:0;right:0;width:5px;height:5px;border-radius:50%;background:var(--success)"></div>
-          </div> Answered + Marked
+            <div style="position:absolute;bottom:0;right:0;width:4px;height:4px;border-radius:50%;background:var(--success)"></div>
+          </div> Ans + Marked
         </div>
       </div>
-      <div class="palette-grid" id="palette-grid"></div>
+      <div id="palette-sections"></div>
       <div class="palette-summary" id="palette-summary"></div>
       <div class="submit-btn-wrap">
         <button class="btn btn-danger" style="width:100%" onclick="showSubmitModal()">Submit Exam</button>
@@ -824,28 +555,46 @@ label { font-size: 13px; color: var(--text-secondary); display: block; margin-bo
   </div>
 </div>
 
-<!-- ===================== ANALYSIS ===================== -->
+<!-- ANALYSIS -->
 <div id="page-analysis" class="page">
-  <div class="analysis-nav">
-    <button class="btn btn-ghost btn-sm" onclick="showPage('home');loadHomeHistory()">← Home</button>
-    <button class="btn btn-ghost btn-sm" onclick="exportCurrentExam()">Export Exam JSON</button>
+  <div style="max-width:920px;margin:0 auto;padding:50px 24px 80px">
+    <div class="analysis-nav">
+      <button class="btn btn-ghost btn-sm" onclick="showPage('home');loadHomeHistory()">← Home</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="exportCurrentExam()">Export Result</button>
+      </div>
+    </div>
+    <h1 class="serif" style="font-size:36px;margin-bottom:28px">Exam Analysis</h1>
+    <div class="glass score-card" id="analysis-score-card"></div>
+    <h2 class="serif" style="font-size:22px;margin-bottom:16px">Section Breakdown</h2>
+    <div class="section-breakdown" id="analysis-section-breakdown"></div>
+    <h2 class="serif" style="font-size:22px;margin-bottom:16px">Time per Question</h2>
+    <div id="analysis-time-breakdown" style="margin-bottom:30px"></div>
+    <h2 class="serif" style="font-size:22px;margin-bottom:16px">Question Review</h2>
+    <div class="review-list" id="analysis-review-list"></div>
   </div>
-  <h1 class="serif" style="font-size:36px;margin-bottom:28px">Exam Analysis</h1>
-  <div class="glass score-card" id="analysis-score-card"></div>
-  <h2 class="serif" style="font-size:22px;margin-bottom:16px">Section Breakdown</h2>
-  <div class="section-breakdown" id="analysis-section-breakdown"></div>
-  <h2 class="serif" style="font-size:22px;margin-bottom:16px">Question Review</h2>
-  <div class="review-list" id="analysis-review-list"></div>
 </div>
 
 <!-- Submit Modal -->
 <div class="modal-overlay" id="submit-modal">
   <div class="modal">
     <h3>Submit Exam?</h3>
-    <p id="submit-modal-msg">Are you sure you want to submit?</p>
+    <p id="submit-modal-msg"></p>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal('submit-modal')">Go Back</button>
       <button class="btn btn-danger" onclick="submitExam()">Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="modal">
+    <h3 id="delete-modal-title">Delete?</h3>
+    <p id="delete-modal-msg"></p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="cancelDeleteAction()">Go Back</button>
+      <button class="btn btn-danger" id="delete-modal-confirm" onclick="confirmDeleteAction()">Delete</button>
     </div>
   </div>
 </div>
@@ -856,9 +605,7 @@ label { font-size: 13px; color: var(--text-secondary); display: block; margin-bo
   <div class="timer-warning-text">Time's up! Submitting...</div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
-
 </div>
 
 <script>
@@ -866,20 +613,23 @@ label { font-size: 13px; color: var(--text-secondary); display: block; margin-bo
 let state = {
   currentPage: 'home',
   examConfig: null,
-  questions: [], // flat list with sectionIdx, localIdx, sectionName
-  responses: {}, // questionGlobalIdx -> { answer, status } status: 'not-visited'|'not-answered'|'answered'|'marked'|'answered-marked'
+  questions: [],
+  responses: {},       // globalIdx -> {answer, status}
+  questionTimes: {},   // globalIdx -> seconds spent
   currentQuestionIdx: 0,
-  currentSectionIdx: 0,
   timer: null,
   timerSeconds: 0,
-  timerDirection: 'down', // 'down' or 'up'
+  timerDirection: 'down',
+  timeMode: 'total',
   examStartTime: null,
   examId: null,
+  templateId: null,    // shared across retakes of same exam
   parsedJson: null,
-  timeMode: 'total',
-  markingScheme: { singleCorrect:4, singleWrong:-1, multiCorrect:4, multiWrong:-2, numCorrect:4, numWrong:0 },
+  markingScheme: {},
   showAnswerAfterEach: false,
   showingAnswer: false,
+  _perqSeconds: 120,
+  _qEnteredAt: null,   // timestamp when current question was opened
 };
 
 // ===================== UTILS =====================
@@ -889,47 +639,38 @@ function showPage(name) {
   if (el) el.classList.add('active');
   state.currentPage = name;
 }
-
-function showToast(msg, duration=2500) {
+function showToast(msg, d=2500) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), duration);
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), d);
 }
-
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
 function renderMath(el) {
   if (window.renderMathInElement) {
-    renderMathInElement(el, {
-      delimiters: [
-        {left:'$$', right:'$$', display:true},
-        {left:'$', right:'$', display:false}
-      ],
-      throwOnError: false
-    });
+    renderMathInElement(el, { delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], throwOnError:false });
   }
 }
-
-function generateId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2);
-}
-
+function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function formatTime(secs) {
-  const h = Math.floor(secs/3600);
-  const m = Math.floor((secs%3600)/60);
-  const s = secs%60;
-  if (h > 0) return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  secs = Math.max(0, Math.round(secs));
+  const h = Math.floor(secs/3600), m = Math.floor((secs%3600)/60), s = secs%60;
+  if (h > 0) return `${pad(h)}:${pad(m)}:${pad(s)}`;
+  return `${pad(m)}:${pad(s)}`;
 }
-
-function getLS(key) { try { return JSON.parse(localStorage.getItem(key)); } catch(e) { return null; } }
-function setLS(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+function formatMins(secs) {
+  if (secs < 60) return secs + 's';
+  return (secs/60).toFixed(1) + ' min';
+}
+function pad(n) { return String(n).padStart(2,'0'); }
+function getLS(k) { try { return JSON.parse(localStorage.getItem(k)); } catch(e) { return null; } }
+function setLS(k,v) { localStorage.setItem(k, JSON.stringify(v)); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ===================== HOME =====================
 function goToSetup() {
   state.parsedJson = null;
+  state.templateId = null;
   document.getElementById('json-textarea').value = '';
   document.getElementById('exam-name-input').value = '';
   document.getElementById('validation-result').innerHTML = '';
@@ -939,32 +680,196 @@ function goToSetup() {
 }
 
 function loadHomeHistory() {
-  const list = document.getElementById('exam-history-list');
-  const history = getLS('nexa_exam_history') || [];
-  if (history.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div>No exams yet. Start a new exam to get going!</div></div>`;
+  const el = document.getElementById('exam-history-list');
+  // groups = {templateId: {name, sections, takes:[...]}}
+  const templates = getLS('nexa_templates') || {};
+  const keys = Object.keys(templates);
+  if (!keys.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📋</div><div>No exams yet. Start a new exam!</div></div>`;
     return;
   }
-  list.innerHTML = history.slice().reverse().map(exam => `
-    <div class="glass exam-card">
-      <div class="exam-card-info">
-        <div class="exam-card-name">${escHtml(exam.name)}</div>
-        <div class="exam-card-meta">${new Date(exam.date).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})} · ${exam.sections.join(', ')}</div>
+  el.innerHTML = keys.slice().reverse().map(tid => {
+    const tmpl = templates[tid];
+    const takes = (tmpl.takes || []).slice().reverse();
+    const takeRows = takes.map((take, i) => {
+      const totalSecs = take.totalTime || 0;
+      return `<div class="exam-take-row">
+        <div class="take-num">Take #${tmpl.takes.length - i}</div>
+        <div class="take-main">
+          <div class="take-date">${new Date(take.date).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+          <div class="take-time">⏱ ${formatMins(totalSecs)} total time</div>
+        </div>
+        <div class="take-score-wrap">
+          <div class="take-score">${take.score}</div>
+          <div class="take-score-lbl">Score</div>
+        </div>
+        <div class="take-actions">
+          <button class="btn btn-ghost btn-sm" onclick="viewAnalysis('${take.resultId}')">Analysis</button>
+          <button class="btn icon-btn delete-icon-btn" title="Delete attempt" aria-label="Delete attempt" onclick="deleteExamTake('${tid}','${take.resultId}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="exam-group">
+      <div class="exam-group-header" onclick="toggleGroup('${tid}',this)">
+        <div style="min-width:0">
+          <div class="exam-group-name">${escHtml(tmpl.name)}</div>
+          <div style="display:flex;gap:12px;margin-top:4px;align-items:center">
+            <div class="exam-group-id">ID: ${tid}</div>
+            <div class="exam-group-meta">${tmpl.sections.join(' · ')} · ${tmpl.takes.length} take${tmpl.takes.length!==1?'s':''}</div>
+          </div>
+        </div>
+        <div class="exam-group-actions">
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();retakeExam('${tid}')">Retake</button>
+          <button class="btn icon-btn delete-icon-btn" title="Delete exam" aria-label="Delete exam" onclick="event.stopPropagation();deleteExamGroup('${tid}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+          </button>
+          <svg class="exam-group-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
       </div>
-      <div class="exam-card-score">
-        <div class="exam-score-val">${exam.score}</div>
-        <div class="exam-score-label">Score</div>
-      </div>
-      <div class="exam-card-actions">
-        <button class="btn btn-ghost btn-sm" onclick="viewAnalysis('${exam.id}')">Analysis</button>
-        <button class="btn btn-ghost btn-sm" onclick="retakeExam('${exam.id}')">Retake</button>
-      </div>
-    </div>
-  `).join('');
+      <div class="exam-takes" id="takes-${tid}">${takeRows}</div>
+    </div>`;
+  }).join('');
 }
 
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function toggleGroup(tid, headerEl) {
+  const takes = document.getElementById('takes-' + tid);
+  takes.classList.toggle('open');
+  headerEl.classList.toggle('open');
+}
+
+function deleteExamGroup(templateId) {
+  const templates = getLS('nexa_templates') || {};
+  const tmpl = templates[templateId];
+  if (!tmpl) { showToast('Exam not found'); return; }
+  openDeleteConfirm({
+    title: 'Delete exam?',
+    message: `Delete "${tmpl.name}" and all of its attempts? This will remove the group, its saved questions, and every related result.`,
+    confirmText: 'Delete Exam',
+    onConfirm: () => {
+      const latestTemplates = getLS('nexa_templates') || {};
+      const latestTmpl = latestTemplates[templateId];
+      if (!latestTmpl) return;
+      (latestTmpl.takes || []).forEach(take => {
+        if (take?.resultId) localStorage.removeItem('nexa_result_' + take.resultId);
+      });
+      delete latestTemplates[templateId];
+      setLS('nexa_templates', latestTemplates);
+      loadHomeHistory();
+      showToast('Exam deleted');
+    }
+  });
+}
+
+function deleteExamTake(templateId, resultId) {
+  const templates = getLS('nexa_templates') || {};
+  const tmpl = templates[templateId];
+  if (!tmpl) { showToast('Exam not found'); return; }
+  const take = (tmpl.takes || []).find(t => t.resultId === resultId);
+  if (!take) { showToast('Take not found'); return; }
+  openDeleteConfirm({
+    title: 'Delete attempt?',
+    message: 'Delete this attempt only? The exam group and its questions will remain.',
+    confirmText: 'Delete Attempt',
+    onConfirm: () => {
+      const latestTemplates = getLS('nexa_templates') || {};
+      const latestTmpl = latestTemplates[templateId];
+      if (!latestTmpl) return;
+      localStorage.removeItem('nexa_result_' + resultId);
+      latestTmpl.takes = (latestTmpl.takes || []).filter(t => t.resultId !== resultId);
+      setLS('nexa_templates', latestTemplates);
+      loadHomeHistory();
+      showToast('Attempt deleted');
+    }
+  });
+}
+
+function openDeleteConfirm({title, message, confirmText, onConfirm}) {
+  state._deleteConfirm = onConfirm;
+  const modal = document.getElementById('delete-modal');
+  document.getElementById('delete-modal-title').textContent = title;
+  document.getElementById('delete-modal-msg').textContent = message;
+  document.getElementById('delete-modal-confirm').textContent = confirmText;
+  openModal('delete-modal');
+}
+
+function confirmDeleteAction() {
+  const action = state._deleteConfirm;
+  state._deleteConfirm = null;
+  closeModal('delete-modal');
+  if (typeof action === 'function') action();
+}
+
+function cancelDeleteAction() {
+  state._deleteConfirm = null;
+  closeModal('delete-modal');
+}
+
+// ===================== IMPORT/EXPORT =====================
+function triggerImport() { document.getElementById('import-file-input').click(); }
+
+function handleImportFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (data.type === 'nexatest_export') {
+        importExportedData(data);
+      } else {
+        showToast('Invalid export file format');
+      }
+    } catch(err) { showToast('Could not parse import file'); }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function importExportedData(data) {
+  const templates = getLS('nexa_templates') || {};
+  let imported = 0;
+  (data.templates || []).forEach(tmpl => {
+    if (!templates[tmpl.id]) { templates[tmpl.id] = tmpl; imported++; }
+    else {
+      // merge takes
+      const existIds = new Set((templates[tmpl.id].takes||[]).map(t=>t.resultId));
+      (tmpl.takes||[]).forEach(t => { if (!existIds.has(t.resultId)) templates[tmpl.id].takes.push(t); });
+    }
+  });
+  setLS('nexa_templates', templates);
+  (data.results || []).forEach(r => { if (r && r.id) setLS('nexa_result_' + r.id, r); });
+  loadHomeHistory();
+  showToast(`Imported ${data.templates?.length || 0} exam(s) successfully!`);
+}
+
+function exportAllExams() {
+  const templates = getLS('nexa_templates') || {};
+  const results = [];
+  Object.values(templates).forEach(tmpl => {
+    (tmpl.takes||[]).forEach(take => {
+      const r = getLS('nexa_result_' + take.resultId);
+      if (r) results.push(r);
+    });
+  });
+  downloadJson({ type:'nexatest_export', templates: Object.values(templates), results }, 'nexatest-all-exams.json');
+}
+
+function exportCurrentExam() {
+  if (!state._lastResult) { showToast('No result loaded'); return; }
+  const templates = getLS('nexa_templates') || {};
+  const tmpl = templates[state._lastResult.templateId];
+  downloadJson({ type:'nexatest_export', templates: tmpl ? [tmpl] : [], results: [state._lastResult] }, 'nexatest-result-' + state._lastResult.id + '.json');
+}
+
+function downloadJson(data, filename) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Downloaded ' + filename);
 }
 
 // ===================== JSON VALIDATION =====================
@@ -973,120 +878,88 @@ function validateJson(text) {
   if (!text.trim()) { resEl.innerHTML = ''; state.parsedJson = null; document.getElementById('next-step-btn').disabled = true; return; }
   let data;
   try { data = JSON.parse(text); } catch(e) {
-    resEl.innerHTML = `<div class="validation-result invalid"><strong style="color:var(--danger)">❌ Invalid JSON</strong><div class="error-msg">${e.message}</div></div>`;
+    resEl.innerHTML = `<div class="validation-result invalid"><strong style="color:var(--danger)">❌ Invalid JSON</strong><div style="font-size:13px;color:var(--text-secondary);margin-top:4px">${e.message}</div></div>`;
     state.parsedJson = null; document.getElementById('next-step-btn').disabled = true; return;
   }
   const errors = [];
-  if (!Array.isArray(data)) { errors.push('Root must be an array of sections'); }
-  else {
-    data.forEach((sec, si) => {
-      if (!sec.section) errors.push(`Section ${si+1}: missing "section" name`);
-      if (!['single','multiple','numerical'].includes(sec.type)) errors.push(`Section ${si+1} ("${sec.section||''}"): type must be single|multiple|numerical`);
-      if (!Array.isArray(sec.questions) || sec.questions.length===0) errors.push(`Section ${si+1}: no questions found`);
-      else sec.questions.forEach((q, qi) => {
-        if (!q.question) errors.push(`Section ${si+1}, Q${qi+1}: missing "question" field`);
-        if (sec.type !== 'numerical') {
-          if (!Array.isArray(q.options) || q.options.length===0) errors.push(`Section ${si+1}, Q${qi+1}: missing options`);
-        }
-        if (q.answer === undefined || q.answer === null || q.answer === '') errors.push(`Section ${si+1}, Q${qi+1}: missing "answer"`);
-      });
+  if (!Array.isArray(data)) errors.push('Root must be an array of sections');
+  else data.forEach((sec, si) => {
+    if (!sec.section) errors.push(`Section ${si+1}: missing "section" name`);
+    if (!['single','multiple','numerical'].includes(sec.type)) errors.push(`Section ${si+1}: type must be single|multiple|numerical`);
+    if (!Array.isArray(sec.questions) || !sec.questions.length) errors.push(`Section ${si+1}: no questions`);
+    else sec.questions.forEach((q, qi) => {
+      if (!q.question) errors.push(`Section ${si+1}, Q${qi+1}: missing question`);
+      if (sec.type !== 'numerical' && (!Array.isArray(q.options) || !q.options.length)) errors.push(`Section ${si+1}, Q${qi+1}: missing options`);
+      if (q.answer === undefined || q.answer === null || q.answer === '') errors.push(`Section ${si+1}, Q${qi+1}: missing answer`);
     });
-  }
-  if (errors.length > 0) {
-    resEl.innerHTML = `<div class="validation-result invalid"><strong style="color:var(--danger)">❌ ${errors.length} error(s) found</strong><ul>${errors.map(e=>`<li>${e}</li>`).join('')}</ul></div>`;
+  });
+  if (errors.length) {
+    resEl.innerHTML = `<div class="validation-result invalid"><strong style="color:var(--danger)">❌ ${errors.length} error(s)</strong><ul>${errors.map(e=>`<li>${e}</li>`).join('')}</ul></div>`;
     state.parsedJson = null; document.getElementById('next-step-btn').disabled = true;
   } else {
-    const summary = data.map(s=>`${s.section}: ${s.questions.length} Q`).join(' · ');
     const total = data.reduce((a,s)=>a+s.questions.length,0);
-    resEl.innerHTML = `<div class="validation-result valid"><strong style="color:var(--success)">✓ Valid JSON — ${total} questions loaded</strong><div style="font-size:13px;color:var(--text-secondary);margin-top:6px">${summary}</div></div>`;
+    const summary = data.map(s=>`${s.section}: ${s.questions.length} Q`).join(' · ');
+    resEl.innerHTML = `<div class="validation-result valid"><strong style="color:var(--success)">✓ Valid — ${total} questions</strong><div style="font-size:13px;color:var(--text-secondary);margin-top:4px">${summary}</div></div>`;
     state.parsedJson = data; document.getElementById('next-step-btn').disabled = false;
   }
 }
 
 function handleFileDrop(e) {
-  e.preventDefault();
-  document.getElementById('drop-zone').classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if (!file) return;
-  readJsonFile(file);
+  e.preventDefault(); document.getElementById('drop-zone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0]; if (file) readJsonFile(file);
 }
-
-function handleFileInput(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  readJsonFile(file);
-}
-
+function handleFileInput(e) { const file = e.target.files[0]; if (file) readJsonFile(file); }
 function readJsonFile(file) {
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const text = ev.target.result;
-    document.getElementById('json-textarea').value = text;
-    validateJson(text);
-  };
-  reader.readAsText(file);
+  const r = new FileReader();
+  r.onload = ev => { const t = ev.target.result; document.getElementById('json-textarea').value = t; validateJson(t); };
+  r.readAsText(file);
 }
-
 function toggleAiGuide() {
-  const content = document.getElementById('ai-guide-content');
-  const chevron = document.getElementById('ai-guide-chevron');
-  content.classList.toggle('open');
-  chevron.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : '';
+  const c = document.getElementById('ai-guide-content'), ch = document.getElementById('ai-guide-chevron');
+  c.classList.toggle('open'); ch.style.transform = c.classList.contains('open') ? 'rotate(180deg)' : '';
 }
-
 function copyAiPrompt() {
   const text = document.getElementById('ai-prompt-text').textContent;
-  navigator.clipboard.writeText(text).then(()=>showToast('Prompt copied!')).catch(()=>{
-    const ta = document.createElement('textarea');
-    ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-    showToast('Prompt copied!');
-  });
+  navigator.clipboard.writeText(text).then(()=>showToast('Prompt copied!')).catch(()=>{ const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('Prompt copied!'); });
 }
 
 // ===================== SETUP STEPS =====================
 function showStep(n) {
-  document.querySelectorAll('.setup-step').forEach(s=>s.classList.remove('active'));
-  document.getElementById('setup-step-'+n).classList.add('active');
-  for(let i=1;i<=2;i++) {
-    const pill = document.getElementById('step-pill-'+i);
-    pill.classList.remove('active','done');
-    if(i<n) pill.classList.add('done');
-    else if(i===n) pill.classList.add('active');
+  document.querySelectorAll('.setup-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('setup-step-' + n).classList.add('active');
+  for (let i=1;i<=2;i++) {
+    const p = document.getElementById('step-pill-'+i);
+    p.classList.remove('active','done');
+    if (i<n) p.classList.add('done');
+    else if (i===n) p.classList.add('active');
   }
 }
-
 function goToSettingsStep() {
   if (!state.parsedJson) return;
-  if (!document.getElementById('exam-name-input').value.trim()) {
-    showToast('Please enter an exam name');
-    document.getElementById('exam-name-input').focus();
-    return;
-  }
+  if (!document.getElementById('exam-name-input').value.trim()) { showToast('Please enter an exam name'); document.getElementById('exam-name-input').focus(); return; }
   showStep(2);
 }
-
 function goBackToImport() { showStep(1); }
 
 let _timeMode = 'total';
 function setTimeMode(mode, el) {
   _timeMode = mode;
-  document.querySelectorAll('.time-mode-pill').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.time-mode-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('total-time-input').style.display = mode==='total'?'flex':'none';
-  document.getElementById('perq-time-input').style.display = mode==='perq'?'flex':'none';
-  const showAnswerToggle = document.getElementById('show-answer-toggle');
-  if (mode==='total') { showAnswerToggle.disabled = true; showAnswerToggle.checked = false; showAnswerToggle.closest('.settings-row').style.opacity='0.4'; }
-  else { showAnswerToggle.disabled = false; showAnswerToggle.closest('.settings-row').style.opacity='1'; }
+  document.getElementById('total-time-input').style.display = mode==='total' ? 'flex' : 'none';
+  document.getElementById('perq-time-input').style.display = mode==='perq' ? 'flex' : 'none';
+  const tog = document.getElementById('show-answer-toggle');
+  if (mode==='total') { tog.disabled=true; tog.checked=false; tog.closest('.settings-row').style.opacity='0.4'; }
+  else { tog.disabled=false; tog.closest('.settings-row').style.opacity='1'; }
 }
 
+// ===================== START EXAM =====================
 function startExam() {
   if (!state.parsedJson) return;
   const name = document.getElementById('exam-name-input').value.trim();
   if (!name) { showToast('Exam name required'); return; }
-
   const shuffle = document.getElementById('shuffle-toggle').checked;
   const showAnswerAfter = document.getElementById('show-answer-toggle').checked && _timeMode !== 'total';
-
   state.markingScheme = {
     singleCorrect: +document.getElementById('mark-single-correct').value || 4,
     singleWrong: +document.getElementById('mark-single-wrong').value || -1,
@@ -1097,47 +970,35 @@ function startExam() {
   };
 
   // Build flat question list
-  let questions = [];
-  let gIdx = 0;
+  let questions = [], gIdx = 0;
   state.parsedJson.forEach((sec, si) => {
     let qs = [...sec.questions];
-    if (shuffle) qs = qs.sort(()=>Math.random()-0.5);
-    qs.forEach((q, li) => {
-      questions.push({ ...q, sectionIdx: si, sectionName: sec.section, secType: sec.type, globalIdx: gIdx });
-      gIdx++;
+    if (shuffle) qs = qs.sort(() => Math.random()-0.5);
+    qs.forEach(q => {
+      questions.push({...q, sectionIdx:si, sectionName:sec.section, secType:sec.type, globalIdx:gIdx++});
     });
   });
 
   state.questions = questions;
   state.responses = {};
-  questions.forEach((q,i) => { state.responses[i] = { answer: null, status: 'not-visited' }; });
+  state.questionTimes = {};
+  questions.forEach((q,i) => { state.responses[i] = {answer:null, status:'not-visited'}; state.questionTimes[i] = 0; });
   state.currentQuestionIdx = 0;
-  state.currentSectionIdx = 0;
-  state.timeMode = _timeMode;
   state.showAnswerAfterEach = showAnswerAfter;
   state.showingAnswer = false;
   state.examId = generateId();
-  state.examConfig = { name, shuffle, timeMode: _timeMode, markingScheme: state.markingScheme };
+  // templateId: reuse if retake
+  if (!state.templateId) state.templateId = generateId();
+  state.examConfig = { name, shuffle, timeMode:_timeMode, markingScheme:state.markingScheme, _rawJson:state.parsedJson };
   state.examStartTime = Date.now();
+  state.timeMode = _timeMode;
+  state._qEnteredAt = Date.now();
 
-  // Timer setup
-  if (_timeMode==='total') {
-    const mins = parseInt(document.getElementById('total-minutes').value) || 180;
-    state.timerSeconds = mins * 60;
-    state.timerDirection = 'down';
-  } else if (_timeMode==='perq') {
-    const secs = parseInt(document.getElementById('perq-seconds').value) || 120;
-    state.timerSeconds = secs;
-    state.timerDirection = 'down';
-    state._perqSeconds = secs;
-  } else {
-    state.timerSeconds = 0;
-    state.timerDirection = 'up';
-  }
+  if (_timeMode==='total') { const m=parseInt(document.getElementById('total-minutes').value)||180; state.timerSeconds=m*60; state.timerDirection='down'; }
+  else if (_timeMode==='perq') { const s=parseInt(document.getElementById('perq-seconds').value)||120; state.timerSeconds=s; state._perqSeconds=s; state.timerDirection='down'; }
+  else { state.timerSeconds=0; state.timerDirection='up'; }
 
-  // Save session to localStorage
   saveSession();
-
   buildExamUI();
   showPage('exam');
   renderQuestion(0);
@@ -1147,42 +1008,66 @@ function startExam() {
 // ===================== EXAM UI =====================
 function buildExamUI() {
   document.getElementById('exam-name-bar').textContent = state.examConfig.name;
-
-  // Section tabs
   const sections = [...new Set(state.questions.map(q=>q.sectionName))];
   const tabsEl = document.getElementById('section-tabs');
   tabsEl.innerHTML = sections.map((s,i)=>`<div class="section-tab ${i===0?'active':''}" onclick="jumpToSection(${i})" id="sec-tab-${i}">${s}</div>`).join('');
-
-  buildPaletteGrid();
+  buildPaletteForCurrentSection();
 }
 
-function buildPaletteGrid() {
-  const grid = document.getElementById('palette-grid');
-  grid.innerHTML = state.questions.map((q,i)=>
-    `<button class="palette-btn q-not-visited ${i===state.currentQuestionIdx?'current':''}" id="pal-${i}" onclick="jumpToQuestion(${i})">${i+1}</button>`
-  ).join('');
+function getSections() { return [...new Set(state.questions.map(q=>q.sectionName))]; }
+function getCurrentSection() { return state.questions[state.currentQuestionIdx]?.sectionName; }
+
+function buildPaletteForCurrentSection() {
+  const curSec = getCurrentSection();
+  const sections = getSections();
+  const palEl = document.getElementById('palette-sections');
+  palEl.innerHTML = sections.map((secName, si) => {
+    const secQs = state.questions.filter(q => q.sectionName === secName);
+    const isActive = secName === curSec;
+    const btns = secQs.map(q => {
+      const r = state.responses[q.globalIdx];
+      let cls = 'q-not-visited';
+      if (r.status==='not-answered') cls='q-not-answered';
+      else if (r.status==='answered') cls='q-answered';
+      else if (r.status==='marked') cls='q-marked';
+      else if (r.status==='answered-marked') cls='q-answered-marked';
+      const isCur = q.globalIdx === state.currentQuestionIdx;
+      return `<button class="palette-btn ${cls}${isCur?' current':''}" id="pal-${q.globalIdx}" onclick="jumpToQuestion(${q.globalIdx})">${q.globalIdx+1}</button>`;
+    }).join('');
+    return `<div style="margin-bottom:10px">
+      <div class="palette-section-label" style="${isActive?'color:var(--accent)':''}">${escHtml(secName)}</div>
+      <div class="palette-grid">${btns}</div>
+    </div>`;
+  }).join('');
   updatePaletteSummary();
 }
 
 function updatePalette() {
+  // Only update buttons for current section (performance), rebuild all section labels
+  const curSec = getCurrentSection();
+  const sections = getSections();
+  // update all palette buttons that exist
   state.questions.forEach((q,i) => {
     const btn = document.getElementById('pal-'+i);
     if (!btn) return;
     const r = state.responses[i];
     btn.className = 'palette-btn';
-    if (i===state.currentQuestionIdx) btn.classList.add('current');
     if (r.status==='not-visited') btn.classList.add('q-not-visited');
     else if (r.status==='not-answered') btn.classList.add('q-not-answered');
     else if (r.status==='answered') btn.classList.add('q-answered');
     else if (r.status==='marked') btn.classList.add('q-marked');
     else if (r.status==='answered-marked') btn.classList.add('q-answered-marked');
+    if (i===state.currentQuestionIdx) btn.classList.add('current');
   });
-  // section tabs
-  const sections = [...new Set(state.questions.map(q=>q.sectionName))];
-  const curSec = state.questions[state.currentQuestionIdx]?.sectionName;
-  sections.forEach((s,i) => {
-    const t = document.getElementById('sec-tab-'+i);
-    if(t) t.classList.toggle('active', s===curSec);
+  // update section label highlights
+  sections.forEach((s, si) => {
+    const labels = document.querySelectorAll('.palette-section-label');
+    if (labels[si]) labels[si].style.color = s===curSec ? 'var(--accent)' : '';
+  });
+  // update section tabs
+  sections.forEach((s, si) => {
+    const t = document.getElementById('sec-tab-'+si);
+    if (t) t.classList.toggle('active', s===curSec);
   });
   updatePaletteSummary();
 }
@@ -1202,549 +1087,450 @@ function updatePaletteSummary() {
   `;
 }
 
+// ===================== QUESTION TIME TRACKING =====================
+function recordTimeOnCurrentQuestion() {
+  if (state._qEnteredAt === null) return;
+  const spent = Math.round((Date.now() - state._qEnteredAt) / 1000);
+  const idx = state.currentQuestionIdx;
+  state.questionTimes[idx] = (state.questionTimes[idx] || 0) + spent;
+  state._qEnteredAt = null;
+}
+
+function startQuestionTimer() {
+  state._qEnteredAt = Date.now();
+}
+
+// ===================== RENDER QUESTION =====================
 function renderQuestion(idx) {
   state.showingAnswer = false;
   const q = state.questions[idx];
   if (!q) return;
-
-  if (state.responses[idx].status === 'not-visited') {
-    state.responses[idx].status = 'not-answered';
-  }
-
+  if (state.responses[idx].status === 'not-visited') state.responses[idx].status = 'not-answered';
   document.getElementById('q-number').textContent = `Q${idx+1} of ${state.questions.length} — ${q.sectionName}`;
-
   const typeTag = document.getElementById('q-type-tag');
   typeTag.className = 'tag';
   if (q.secType==='single') { typeTag.textContent='Single Correct'; typeTag.classList.add('tag-single'); }
   else if (q.secType==='multiple') { typeTag.textContent='Multiple Correct'; typeTag.classList.add('tag-multiple'); }
   else { typeTag.textContent='Numerical'; typeTag.classList.add('tag-numerical'); }
-
   const qText = document.getElementById('q-text');
-  qText.textContent = q.question;
-  renderMath(qText);
-
+  qText.textContent = q.question; renderMath(qText);
   const qDiag = document.getElementById('q-diagram');
   if (q.diagram) { qDiag.src=q.diagram; qDiag.style.display='block'; } else { qDiag.style.display='none'; }
-
   renderInputArea(q, idx);
   updatePalette();
+  if (state.timeMode==='perq') state.timerSeconds = state._perqSeconds;
+  renderActions();
+  startQuestionTimer();
+}
 
-  // Per-question timer reset
-  if (state.timeMode==='perq') {
-    state.timerSeconds = state._perqSeconds;
-  }
-
-  // Actions
+function renderActions() {
   const actEl = document.getElementById('question-actions');
   if (state.showAnswerAfterEach) {
-    actEl.innerHTML = `
-      <button class="btn btn-primary" onclick="showAnswerAndNext()">Check &amp; Next</button>
-      <button class="btn btn-ghost" onclick="markForReview()">Mark for Review</button>
-      <button class="btn btn-ghost" onclick="clearResponse()" style="color:var(--danger)">Clear</button>
-    `;
+    actEl.innerHTML = `<button class="btn btn-primary" onclick="showAnswerAndNext()">Check &amp; Next</button><button class="btn btn-ghost" onclick="markForReview()">Mark for Review</button><button class="btn btn-ghost" onclick="clearResponse()" style="color:var(--danger)">Clear</button>`;
   } else {
-    actEl.innerHTML = `
-      <button class="btn btn-primary" onclick="saveAndNext()">Save &amp; Next</button>
-      <button class="btn btn-ghost" onclick="markForReview()">Mark for Review</button>
-      <button class="btn btn-ghost" onclick="clearResponse()" style="color:var(--danger)">Clear Response</button>
-    `;
+    actEl.innerHTML = `<button class="btn btn-primary" onclick="saveAndNext()">Save &amp; Next</button><button class="btn btn-ghost" onclick="markForReview()">Mark for Review</button><button class="btn btn-ghost" onclick="clearResponse()" style="color:var(--danger)">Clear Response</button>`;
   }
 }
 
 function renderInputArea(q, idx) {
   const area = document.getElementById('q-input-area');
   const resp = state.responses[idx];
-
   if (q.secType==='single' || q.secType==='multiple') {
     area.innerHTML = `<div class="options-grid">${q.options.map(o=>`
       <button class="option-btn" id="opt-${o.option_id}" onclick="selectOption('${o.option_id}',${idx})">
         <span class="option-id">${o.option_id}</span>
         <span class="option-text" id="opt-text-${o.option_id}">${o.option}</span>
-      </button>
-    `).join('')}</div>`;
-
-    // Render math in options
+      </button>`).join('')}</div>`;
     q.options.forEach(o => {
       const el = document.getElementById('opt-text-'+o.option_id);
       if (el) renderMath(el);
-      if (o.diagram) {
-        const img = document.createElement('img');
-        img.src=o.diagram; img.style.cssText='max-width:100%;border-radius:6px;margin-top:8px;';
-        if(el) el.appendChild(img);
-      }
+      if (o.diagram) { const img=document.createElement('img'); img.src=o.diagram; img.style.cssText='max-width:100%;border-radius:6px;margin-top:8px;'; if(el) el.appendChild(img); }
     });
-
-    // Restore selection
     if (resp.answer) {
-      const selected = Array.isArray(resp.answer) ? resp.answer : [resp.answer];
-      selected.forEach(id => {
-        const btn = document.getElementById('opt-'+id);
-        if (btn) btn.classList.add('selected');
-      });
+      const sel = Array.isArray(resp.answer) ? resp.answer : [resp.answer];
+      sel.forEach(id => { const b=document.getElementById('opt-'+id); if(b) b.classList.add('selected'); });
     }
   } else {
-    // Numerical
     const val = resp.answer || '';
+    _numCurrent = val ? String(val) : '';
     area.innerHTML = `
-      <div class="numerical-display" id="num-display">${val || '<span style="color:var(--text-secondary)">Enter value...</span>'}</div>
+      <div class="numerical-display" id="num-display">${val||'<span style="color:var(--text-secondary)">Enter value...</span>'}</div>
       <div class="numpad">
-        ${[7,8,9,'⌫',4,5,6,'C',1,2,3,'±',0,'.','',''].map(k=>k===''
-          ? '<div></div>'
-          : `<button class="numpad-btn ${k==='⌫'||k==='C'?'special':''}${k==='C'?'clear':''}" onclick="numpadPress('${k}')">${k}</button>`
-        ).join('')}
-      </div>
-    `;
+        ${[7,8,9,'⌫',4,5,6,'C',1,2,3,'±',0,'.','',''].map(k=>k===''?'<div></div>':`<button class="numpad-btn ${k==='⌫'||k==='C'?'special':''}${k==='C'?' clear':''}" onclick="numpadPress('${k}')">${k}</button>`).join('')}
+      </div>`;
     document.addEventListener('keydown', numKeyHandler);
   }
 }
 
 let _numCurrent = '';
 function numpadPress(key) {
-  const idx = state.currentQuestionIdx;
-  const resp = state.responses[idx];
-  let cur = _numCurrent || (resp.answer ? String(resp.answer) : '');
-  if (key==='⌫') { cur=cur.slice(0,-1); }
-  else if (key==='C') { cur=''; }
-  else if (key==='±') { cur=cur.startsWith('-')?cur.slice(1):('-'+cur); }
+  const idx = state.currentQuestionIdx, resp = state.responses[idx];
+  let cur = _numCurrent;
+  if (key==='⌫') cur=cur.slice(0,-1);
+  else if (key==='C') cur='';
+  else if (key==='±') cur=cur.startsWith('-')?cur.slice(1):('-'+cur);
   else if (key==='.') { if(!cur.includes('.')) cur+='.'; }
   else { if(cur.length<12) cur+=key; }
-  _numCurrent=cur;
-  const disp=document.getElementById('num-display');
-  if(disp) disp.innerHTML=cur||'<span style="color:var(--text-secondary)">Enter value...</span>';
-  // update response immediately
-  resp.answer=cur;
-  if(cur) resp.status=(resp.status==='marked'||resp.status==='answered-marked')?'answered-marked':'answered';
-  else resp.status='not-answered';
-  saveSession();
+  _numCurrent = cur;
+  const d = document.getElementById('num-display');
+  if (d) d.innerHTML = cur||'<span style="color:var(--text-secondary)">Enter value...</span>';
+  resp.answer = cur;
+  resp.status = cur ? (resp.status==='marked'||resp.status==='answered-marked'?'answered-marked':'answered') : 'not-answered';
+  saveSession(); updatePalette();
 }
-
 function numKeyHandler(e) {
   if (state.currentPage!=='exam') { document.removeEventListener('keydown',numKeyHandler); return; }
-  const q=state.questions[state.currentQuestionIdx];
+  const q = state.questions[state.currentQuestionIdx];
   if (q && q.secType==='numerical') {
-    if ((e.key>='0'&&e.key<='9')||e.key==='.'||e.key==='-') { e.preventDefault(); numpadPress(e.key==='.'?'.':e.key==='-'?'±':e.key); }
+    if ((e.key>='0'&&e.key<='9')||e.key==='.') { e.preventDefault(); numpadPress(e.key); }
+    else if (e.key==='-') { e.preventDefault(); numpadPress('±'); }
     else if (e.key==='Backspace') { e.preventDefault(); numpadPress('⌫'); }
     else if (e.key==='Delete') { e.preventDefault(); numpadPress('C'); }
   }
 }
 
 function selectOption(optId, idx) {
-  const q=state.questions[idx];
-  const resp=state.responses[idx];
   if (state.showingAnswer) return;
-
+  const q = state.questions[idx], resp = state.responses[idx];
   if (q.secType==='single') {
-    const wasSelected = resp.answer===optId;
-    resp.answer = wasSelected ? null : optId;
+    const was = resp.answer===optId;
+    resp.answer = was ? null : optId;
     document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
-    if (!wasSelected) document.getElementById('opt-'+optId)?.classList.add('selected');
+    if (!was) document.getElementById('opt-'+optId)?.classList.add('selected');
   } else {
     let arr = Array.isArray(resp.answer) ? [...resp.answer] : [];
-    if (arr.includes(optId)) arr=arr.filter(x=>x!==optId);
-    else arr.push(optId);
+    if (arr.includes(optId)) arr=arr.filter(x=>x!==optId); else arr.push(optId);
     resp.answer = arr.length ? arr : null;
     document.getElementById('opt-'+optId)?.classList.toggle('selected');
   }
-
   resp.status = resp.answer ? (resp.status==='marked'||resp.status==='answered-marked'?'answered-marked':'answered') : 'not-answered';
-  saveSession();
-  updatePalette();
+  saveSession(); updatePalette();
 }
 
 function saveAndNext() {
-  const idx=state.currentQuestionIdx;
-  const resp=state.responses[idx];
-  if (resp.answer!==null && resp.answer!=='' && !(Array.isArray(resp.answer)&&resp.answer.length===0)) {
-    if(resp.status==='marked') resp.status='answered-marked';
-    else if(resp.status!=='answered-marked') resp.status='answered';
-  }
-  saveSession();
-  navigateNext();
+  const resp = state.responses[state.currentQuestionIdx];
+  const hasAns = resp.answer!==null && resp.answer!=='' && !(Array.isArray(resp.answer)&&!resp.answer.length);
+  if (hasAns) { if(resp.status==='marked') resp.status='answered-marked'; else if(resp.status!=='answered-marked') resp.status='answered'; }
+  saveSession(); navigateNext();
 }
 
 function showAnswerAndNext() {
-  const idx=state.currentQuestionIdx;
-  const q=state.questions[idx];
-  const resp=state.responses[idx];
-  state.showingAnswer=true;
-
-  if(resp.answer!==null && resp.answer!=='' && !(Array.isArray(resp.answer)&&resp.answer.length===0)) {
-    resp.status='answered';
-  }
-
-  // Show correct/wrong on options
+  const idx = state.currentQuestionIdx, q = state.questions[idx], resp = state.responses[idx];
+  state.showingAnswer = true;
+  const hasAns = resp.answer!==null && resp.answer!=='' && !(Array.isArray(resp.answer)&&!resp.answer.length);
+  if (hasAns) resp.status='answered';
   if (q.secType==='single'||q.secType==='multiple') {
     const correct = Array.isArray(q.answer)?q.answer:[q.answer];
     document.querySelectorAll('.option-btn').forEach(btn => {
-      const id=btn.querySelector('.option-id').textContent;
+      const id = btn.querySelector('.option-id').textContent;
       btn.classList.remove('selected');
       if (correct.includes(id)) btn.classList.add('correct');
       else if ((Array.isArray(resp.answer)?resp.answer:[resp.answer]).includes(id)) btn.classList.add('wrong');
     });
   }
-
-  document.getElementById('question-actions').innerHTML=`
-    <button class="btn btn-primary" onclick="navigateNext()">Next →</button>
-    <span style="font-size:13px;color:var(--text-secondary);align-self:center">Correct: ${Array.isArray(q.answer)?q.answer.join(', '):q.answer}</span>
-  `;
+  document.getElementById('question-actions').innerHTML = `<button class="btn btn-primary" onclick="navigateNext()">Next →</button><span style="font-size:13px;color:var(--text-secondary);align-self:center">Correct: ${Array.isArray(q.answer)?q.answer.join(', '):q.answer}</span>`;
   saveSession();
 }
 
 function markForReview() {
-  const resp=state.responses[state.currentQuestionIdx];
-  if (resp.status==='answered'||resp.status==='answered-marked') resp.status='answered-marked';
-  else resp.status='marked';
-  saveSession();
-  updatePalette();
-  navigateNext();
+  const resp = state.responses[state.currentQuestionIdx];
+  resp.status = (resp.status==='answered'||resp.status==='answered-marked') ? 'answered-marked' : 'marked';
+  saveSession(); updatePalette(); navigateNext();
 }
 
 function clearResponse() {
-  const idx=state.currentQuestionIdx;
-  const resp=state.responses[idx];
-  resp.answer=null;
-  if(resp.status==='answered-marked') resp.status='marked';
-  else resp.status='not-answered';
-  _numCurrent='';
-  saveSession();
-  renderQuestion(idx);
+  const idx = state.currentQuestionIdx, resp = state.responses[idx];
+  resp.answer = null; _numCurrent = '';
+  resp.status = resp.status==='answered-marked' ? 'marked' : 'not-answered';
+  saveSession(); renderQuestion(idx);
 }
 
 function navigateNext() {
-  const next=state.currentQuestionIdx+1;
-  if (next<state.questions.length) jumpToQuestion(next);
+  recordTimeOnCurrentQuestion();
+  const next = state.currentQuestionIdx + 1;
+  if (next < state.questions.length) jumpToQuestion(next);
   else showToast('You\'ve reached the last question');
 }
 
 function jumpToQuestion(idx) {
-  state.currentQuestionIdx=idx;
-  _numCurrent='';
+  recordTimeOnCurrentQuestion();
+  state.currentQuestionIdx = idx; _numCurrent = '';
   renderQuestion(idx);
-  document.getElementById('exam-left').scrollTop=0;
+  document.getElementById('exam-left').scrollTop = 0;
 }
 
 function jumpToSection(si) {
-  const sections=[...new Set(state.questions.map(q=>q.sectionName))];
-  const secName=sections[si];
-  const firstQ=state.questions.findIndex(q=>q.sectionName===secName);
-  if(firstQ>=0) jumpToQuestion(firstQ);
+  const secName = getSections()[si];
+  const firstQ = state.questions.findIndex(q=>q.sectionName===secName);
+  if (firstQ >= 0) jumpToQuestion(firstQ);
 }
 
 // ===================== TIMER =====================
 function startTimer() {
   clearInterval(state.timer);
   updateTimerDisplay();
-  state.timer=setInterval(tickTimer,1000);
+  state.timer = setInterval(tickTimer, 1000);
 }
-
 function tickTimer() {
   if (state.timerDirection==='down') {
     state.timerSeconds--;
-    if (state.timerSeconds<=0) {
-      clearInterval(state.timer);
-      showTimerWarning();
-      return;
-    }
-  } else {
-    state.timerSeconds++;
-  }
-  updateTimerDisplay();
-  saveSession();
+    if (state.timerSeconds <= 0) { clearInterval(state.timer); showTimerWarning(); return; }
+  } else { state.timerSeconds++; }
+  updateTimerDisplay(); saveSession();
 }
-
 function updateTimerDisplay() {
-  const el=document.getElementById('timer-display');
+  const el = document.getElementById('timer-display');
   if (!el) return;
-  el.textContent=formatTime(state.timerSeconds);
+  el.textContent = formatTime(state.timerSeconds);
   if (state.timerDirection==='down') {
     el.className='timer-display';
     if (state.timerSeconds<60) el.classList.add('danger');
     else if (state.timerSeconds<300) el.classList.add('warning');
   }
 }
-
 function showTimerWarning() {
-  const overlay=document.getElementById('timer-warning');
+  const overlay = document.getElementById('timer-warning');
   overlay.classList.add('open');
-  let c=3;
-  document.getElementById('warning-countdown').textContent=c;
-  const iv=setInterval(()=>{
-    c--;
-    if(c<=0){clearInterval(iv);overlay.classList.remove('open');submitExam();}
-    else document.getElementById('warning-countdown').textContent=c;
-  },1000);
+  let c = 3; document.getElementById('warning-countdown').textContent = c;
+  const iv = setInterval(()=>{ c--; if(c<=0){clearInterval(iv);overlay.classList.remove('open');submitExam();}else document.getElementById('warning-countdown').textContent=c; }, 1000);
 }
 
 // ===================== SUBMIT =====================
 function showSubmitModal() {
-  const rs=Object.values(state.responses);
-  const answered=rs.filter(r=>r.answer!==null&&r.answer!==''&&!(Array.isArray(r.answer)&&r.answer.length===0)).length;
-  const unanswered=state.questions.length-answered;
-  document.getElementById('submit-modal-msg').innerHTML=
-    `<strong>${unanswered}</strong> question(s) unanswered out of ${state.questions.length}. Are you sure you want to submit?`;
+  const rs = Object.values(state.responses);
+  const answered = rs.filter(r=>r.answer!==null&&r.answer!==''&&!(Array.isArray(r.answer)&&!r.answer.length)).length;
+  document.getElementById('submit-modal-msg').innerHTML = `<strong>${state.questions.length - answered}</strong> question(s) unanswered out of ${state.questions.length}. Submit now?`;
   openModal('submit-modal');
 }
-
 function submitExam() {
   closeModal('submit-modal');
   clearInterval(state.timer);
-  const result=calculateResult();
+  recordTimeOnCurrentQuestion();
+  const result = calculateResult();
   saveResult(result);
   clearSession();
   showAnalysis(result);
 }
 
 function calculateResult() {
-  const ms=state.markingScheme;
-  let totalScore=0,totalCorrect=0,totalWrong=0,totalSkip=0;
-  const sections={};
+  const ms = state.markingScheme;
+  let totalScore=0, totalCorrect=0, totalWrong=0, totalSkip=0;
+  const sections = {};
+  const totalTime = state.timerDirection==='up' ? state.timerSeconds : (state.examConfig.timeMode==='total' ? (parseInt(document.getElementById('total-minutes')?.value||180)*60 - state.timerSeconds) : 0);
 
-  state.questions.forEach((q,i)=>{
-    const resp=state.responses[i];
-    const secName=q.sectionName;
-    if(!sections[secName]) sections[secName]={correct:0,wrong:0,skip:0,score:0,questions:[]};
-
-    let status='skipped',score=0,isCorrect=false;
-    const hasAnswer = resp.answer!==null && resp.answer!=='' && !(Array.isArray(resp.answer)&&resp.answer.length===0);
-
-    if(!hasAnswer){totalSkip++;sections[secName].skip++;status='skipped';}
-    else if(q.secType==='single'){
-      isCorrect=resp.answer===String(q.answer);
-      if(isCorrect){score=ms.singleCorrect;totalCorrect++;sections[secName].correct++;status='correct';}
-      else{score=ms.singleWrong;totalWrong++;sections[secName].wrong++;status='wrong';}
-    } else if(q.secType==='multiple'){
+  state.questions.forEach((q,i) => {
+    const resp = state.responses[i];
+    const secName = q.sectionName;
+    if (!sections[secName]) sections[secName] = {correct:0,wrong:0,skip:0,score:0,questions:[]};
+    let status='skipped', score=0;
+    const hasAns = resp.answer!==null && resp.answer!=='' && !(Array.isArray(resp.answer)&&!resp.answer.length);
+    if (!hasAns) { totalSkip++; sections[secName].skip++; }
+    else if (q.secType==='single') {
+      const ok = resp.answer===String(q.answer);
+      if (ok) { score=ms.singleCorrect; totalCorrect++; sections[secName].correct++; status='correct'; }
+      else { score=ms.singleWrong; totalWrong++; sections[secName].wrong++; status='wrong'; }
+    } else if (q.secType==='multiple') {
       const correct=[...(Array.isArray(q.answer)?q.answer:[q.answer])].sort();
       const given=[...(Array.isArray(resp.answer)?resp.answer:[resp.answer])].sort();
-      isCorrect=JSON.stringify(correct)===JSON.stringify(given);
-      if(isCorrect){score=ms.multiCorrect;totalCorrect++;sections[secName].correct++;status='correct';}
-      else{score=ms.multiWrong;totalWrong++;sections[secName].wrong++;status='wrong';}
+      const ok = JSON.stringify(correct)===JSON.stringify(given);
+      if (ok) { score=ms.multiCorrect; totalCorrect++; sections[secName].correct++; status='correct'; }
+      else { score=ms.multiWrong; totalWrong++; sections[secName].wrong++; status='wrong'; }
     } else {
-      const tol=0.01;
-      isCorrect=Math.abs(parseFloat(resp.answer)-parseFloat(q.answer))<=tol;
-      if(isCorrect){score=ms.numCorrect;totalCorrect++;sections[secName].correct++;status='correct';}
-      else{score=ms.numWrong;totalWrong++;sections[secName].wrong++;status='wrong';}
+      const ok = Math.abs(parseFloat(resp.answer)-parseFloat(q.answer)) <= 0.01;
+      if (ok) { score=ms.numCorrect; totalCorrect++; sections[secName].correct++; status='correct'; }
+      else { score=ms.numWrong; totalWrong++; sections[secName].wrong++; status='wrong'; }
     }
-
-    totalScore+=score;
-    sections[secName].score+=score;
-    sections[secName].questions.push({q,resp,status,score});
+    totalScore += score; sections[secName].score += score;
+    sections[secName].questions.push({q, resp, status, score, timeSpent: state.questionTimes[i]||0});
   });
 
-  return {totalScore,totalCorrect,totalWrong,totalSkip,sections,examConfig:state.examConfig,questions:state.questions,responses:{...state.responses},markingScheme:state.markingScheme,date:Date.now(),id:state.examId};
+  return {
+    id: state.examId, templateId: state.templateId,
+    totalScore, totalCorrect, totalWrong, totalSkip,
+    totalTime, questionTimes:{...state.questionTimes},
+    sections, examConfig: state.examConfig,
+    questions: state.questions, responses:{...state.responses},
+    markingScheme: state.markingScheme, date: Date.now()
+  };
 }
 
 function saveResult(result) {
-  // Save full result
-  setLS('nexa_result_'+result.id, result);
-  // Update history
-  const history=getLS('nexa_exam_history')||[];
-  const secNames=Object.keys(result.sections);
-  history.push({
-    id:result.id, name:result.examConfig.name,
-    date:result.date, score:result.totalScore,
-    sections:secNames
+  setLS('nexa_result_' + result.id, result);
+  const templates = getLS('nexa_templates') || {};
+  if (!templates[result.templateId]) {
+    templates[result.templateId] = {
+      id: result.templateId, name: result.examConfig.name,
+      sections: Object.keys(result.sections),
+      rawJson: result.examConfig._rawJson,
+      takes: []
+    };
+  }
+  templates[result.templateId].takes.push({
+    resultId: result.id, date: result.date,
+    score: result.totalScore, totalTime: result.totalTime
   });
-  setLS('nexa_exam_history',history);
-  state._lastResult=result;
+  setLS('nexa_templates', templates);
+  state._lastResult = result;
 }
 
 function saveSession() {
-  setLS('nexa_active_session',{
+  setLS('nexa_active_session', {
     questions:state.questions, responses:state.responses,
+    questionTimes:state.questionTimes,
     currentQuestionIdx:state.currentQuestionIdx,
     timerSeconds:state.timerSeconds, timerDirection:state.timerDirection,
     timeMode:state.timeMode, examConfig:state.examConfig,
-    examId:state.examId, markingScheme:state.markingScheme,
+    examId:state.examId, templateId:state.templateId,
+    markingScheme:state.markingScheme,
     showAnswerAfterEach:state.showAnswerAfterEach,
     _perqSeconds:state._perqSeconds, examStartTime:state.examStartTime
   });
 }
-
 function clearSession() { localStorage.removeItem('nexa_active_session'); }
-
 function restoreSession() {
-  const sess=getLS('nexa_active_session');
+  const sess = getLS('nexa_active_session');
   if (!sess||!sess.questions) return false;
-  Object.assign(state,sess);
-  buildExamUI();
-  showPage('exam');
+  Object.assign(state, sess);
+  buildExamUI(); showPage('exam');
   renderQuestion(state.currentQuestionIdx);
-  startTimer();
+  startTimer(); startQuestionTimer();
   return true;
+}
+
+// ===================== RETAKE =====================
+function retakeExam(templateId) {
+  const templates = getLS('nexa_templates') || {};
+  const tmpl = templates[templateId];
+  if (!tmpl) { showToast('Exam not found'); return; }
+  state.parsedJson = tmpl.rawJson;
+  state.templateId = templateId;
+  document.getElementById('exam-name-input').value = tmpl.name;
+  const textarea = document.getElementById('json-textarea');
+  textarea.value = JSON.stringify(state.parsedJson, null, 2);
+  validateJson(textarea.value);
+  showStep(1);
+  showPage('setup');
 }
 
 // ===================== ANALYSIS =====================
 function showAnalysis(result) {
-  state._lastResult=result;
+  state._lastResult = result;
+  renderAnalysis(result);
+  showPage('analysis');
+}
+
+function viewAnalysis(resultId) {
+  const result = getLS('nexa_result_' + resultId);
+  if (!result) { showToast('Result not found'); return; }
+  state._lastResult = result;
   renderAnalysis(result);
   showPage('analysis');
 }
 
 function renderAnalysis(result) {
+  const totalSecs = result.totalTime || 0;
   // Score card
-  const maxScore=state.questions ? state.questions.length*4 : Object.values(result.sections).reduce((a,s)=>a+s.questions.length,0)*4;
-  document.getElementById('analysis-score-card').innerHTML=`
+  document.getElementById('analysis-score-card').innerHTML = `
     <div class="score-big">${result.totalScore}</div>
-    <div class="score-label">${result.examConfig.name} · ${new Date(result.date).toLocaleDateString('en-IN')}</div>
+    <div class="score-label">${escHtml(result.examConfig.name)} · ${new Date(result.date).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</div>
     <div class="score-stats">
       <div class="stat-item correct"><div class="stat-val">${result.totalCorrect}</div><div class="stat-lbl">Correct</div></div>
       <div class="stat-item wrong"><div class="stat-val">${result.totalWrong}</div><div class="stat-lbl">Wrong</div></div>
       <div class="stat-item skip"><div class="stat-val">${result.totalSkip}</div><div class="stat-lbl">Unattempted</div></div>
-    </div>
-  `;
+      <div class="stat-item time"><div class="stat-val">${formatMins(totalSecs)}</div><div class="stat-lbl">Total Time</div></div>
+    </div>`;
 
   // Section breakdown
-  const sbEl=document.getElementById('analysis-section-breakdown');
-  sbEl.innerHTML=Object.entries(result.sections).map(([sec,data])=>`
-    <div class="glass section-card">
+  document.getElementById('analysis-section-breakdown').innerHTML = Object.entries(result.sections).map(([sec,data])=>{
+    const secTime = data.questions.reduce((a,q)=>a+(q.timeSpent||0),0);
+    return `<div class="glass section-card">
       <div class="section-card-name">${escHtml(sec)}</div>
       <div class="section-card-stats">
         <div class="sc-stat"><span style="color:var(--success)">${data.correct}</span>Correct</div>
         <div class="sc-stat"><span style="color:var(--danger)">${data.wrong}</span>Wrong</div>
         <div class="sc-stat"><span>${data.skip}</span>Skipped</div>
         <div class="sc-stat"><span style="color:var(--accent)">${data.score}</span>Score</div>
+        <div class="sc-stat"><span style="color:#64b5f6">${formatMins(secTime)}</span>Time</div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
+
+  // Time per question breakdown
+  const allQTimes = result.questions.map((q,i)=>({ q, t: (result.questionTimes||{})[i]||0 }));
+  const maxT = Math.max(1, ...allQTimes.map(x=>x.t));
+  document.getElementById('analysis-time-breakdown').innerHTML = `
+    <div class="glass" style="padding:20px 24px">
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Time spent per question (hover for details)</div>
+      ${allQTimes.map(({q,t},i)=>{
+        const pct = Math.round((t/maxT)*100);
+        const secResult = result.sections[q.sectionName];
+        const qResult = secResult?.questions?.find(x=>x.q.globalIdx===q.globalIdx);
+        const statusColor = qResult?.status==='correct'?'var(--success)':qResult?.status==='wrong'?'var(--danger)':'var(--text-secondary)';
+        return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px" title="Q${i+1} (${q.sectionName}): ${formatMins(t)}">
+          <div style="font-size:12px;color:${statusColor};min-width:28px;text-align:right;font-weight:600">Q${i+1}</div>
+          <div class="time-bar-bg" style="flex:1"><div class="time-bar-fill" style="width:${pct}%"></div></div>
+          <div style="font-size:12px;color:var(--text-secondary);min-width:44px">${formatMins(t)}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
 
   // Review list
-  const rvEl=document.getElementById('analysis-review-list');
-  let html='';
-  let gIdx=0;
-  Object.entries(result.sections).forEach(([sec,data])=>{
-    data.questions.forEach(({q,resp,status,score},li)=>{
-      const yourAns=resp.answer!=null?(Array.isArray(resp.answer)?resp.answer.join(', '):resp.answer):'—';
-      const corrAns=Array.isArray(q.answer)?q.answer.join(', '):q.answer;
-      html+=`
-        <div class="glass review-card">
-          <div class="review-card-header">
-            <div class="review-status ${status}"></div>
-            <div style="flex:1">
-              <div class="review-qnum">${sec} · ${q.secType}</div>
-              <div class="review-question" id="rv-q-${gIdx}">${q.question}</div>
-              ${q.diagram?`<img src="${q.diagram}" style="max-width:100%;border-radius:8px;margin-top:8px;border:1px solid var(--border)">`:''} 
-            </div>
-            <div style="text-align:right;font-size:13px">
-              <div style="color:${score>0?'var(--success)':score<0?'var(--danger)':'var(--text-secondary)'}; font-weight:700">${score>0?'+':''}${score}</div>
-              <div style="color:var(--text-secondary)">points</div>
-            </div>
+  let html = '', gIdx = 0;
+  Object.entries(result.sections).forEach(([sec, data]) => {
+    html += `<div style="font-family:'DM Serif Display',Georgia,serif;font-size:18px;color:var(--text-secondary);margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)">${escHtml(sec)}</div>`;
+    data.questions.forEach(({q, resp, status, score, timeSpent}) => {
+      const yourAns = resp.answer!=null ? (Array.isArray(resp.answer)?resp.answer.join(', '):resp.answer) : '—';
+      const corrAns = Array.isArray(q.answer)?q.answer.join(', '):q.answer;
+      html += `<div class="glass review-card">
+        <div class="review-card-header">
+          <div class="review-status ${status}"></div>
+          <div style="flex:1">
+            <div class="review-qnum">Q${q.globalIdx+1} · ${q.secType} · ⏱ ${formatMins(timeSpent||0)}</div>
+            <div class="review-question" id="rv-q-${gIdx}">${q.question}</div>
+            ${q.diagram?`<img src="${q.diagram}" style="max-width:100%;border-radius:8px;margin-top:8px;border:1px solid var(--border)">`:''} 
           </div>
-          ${q.secType!=='numerical'?`
+          <div style="text-align:right;font-size:13px">
+            <div style="color:${score>0?'var(--success)':score<0?'var(--danger)':'var(--text-secondary)'};font-weight:700">${score>0?'+':''}${score}</div>
+            <div style="color:var(--text-secondary)">pts</div>
+          </div>
+        </div>
+        ${q.secType!=='numerical'?`
           <div style="display:flex;flex-direction:column;gap:8px">
             ${q.options.map(o=>{
-              const isCorrect=Array.isArray(q.answer)?q.answer.includes(o.option_id):q.answer===o.option_id;
-              const isYours=Array.isArray(resp.answer)?resp.answer.includes(o.option_id):resp.answer===o.option_id;
+              const isCorrect = Array.isArray(q.answer)?q.answer.includes(o.option_id):q.answer===o.option_id;
+              const isYours = Array.isArray(resp.answer)?resp.answer.includes(o.option_id):resp.answer===o.option_id;
               return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;border:1px solid ${isCorrect?'var(--success)':isYours&&!isCorrect?'var(--danger)':'var(--border)'};background:${isCorrect?'rgba(76,175,80,0.1)':isYours&&!isCorrect?'rgba(244,67,54,0.08)':'var(--surface)'}">
-              <span style="font-weight:700;color:${isCorrect?'var(--success)':isYours&&!isCorrect?'var(--danger)':'var(--text-secondary)'};">${o.option_id}</span>
-              <span id="rv-opt-${gIdx}-${o.option_id}" style="font-size:14px">${o.option}</span>
-              ${isCorrect?'<span style="margin-left:auto;color:var(--success);font-size:12px">✓ Correct</span>':''}
-              ${isYours&&!isCorrect?'<span style="margin-left:auto;color:var(--danger);font-size:12px">✗ Your answer</span>':''}
+                <span style="font-weight:700;color:${isCorrect?'var(--success)':isYours&&!isCorrect?'var(--danger)':'var(--text-secondary)'}">${o.option_id}</span>
+                <span id="rv-opt-${gIdx}-${o.option_id}" style="font-size:14px">${o.option}</span>
+                ${isCorrect?'<span style="margin-left:auto;color:var(--success);font-size:12px">✓</span>':''}
+                ${isYours&&!isCorrect?'<span style="margin-left:auto;color:var(--danger);font-size:12px">✗</span>':''}
               </div>`;
             }).join('')}
-          </div>
-          `:`
+          </div>`:`
           <div class="review-answers">
             <div class="your ${status==='wrong'?'wrong-a':''}">Your answer: <strong>${yourAns}</strong></div>
             <div class="correct-a">Correct: <strong>${corrAns}</strong></div>
-          </div>
-          `}
-          ${q.solution?`<div style="margin-top:14px;padding:14px;background:rgba(108,99,255,0.08);border-radius:8px;border:1px solid var(--accent-glow);font-size:14px;color:var(--text-secondary)" id="rv-sol-${gIdx}"><strong style="color:var(--accent)">Solution:</strong> ${q.solution}</div>`:''}
-        </div>
-      `;
+          </div>`}
+        ${q.solution?`<div style="margin-top:14px;padding:14px;background:rgba(108,99,255,0.08);border-radius:8px;border:1px solid var(--accent-glow);font-size:14px;color:var(--text-secondary)"><strong style="color:var(--accent)">Solution:</strong> <span id="rv-sol-${gIdx}">${q.solution}</span></div>`:''}
+      </div>`;
       gIdx++;
     });
   });
-  rvEl.innerHTML=html;
-
-  // Render math in all review items
-  setTimeout(()=>{
-    const rvList=document.getElementById('analysis-review-list');
-    if(rvList) renderMath(rvList);
-  },100);
-}
-
-function viewAnalysis(examId) {
-  const result=getLS('nexa_result_'+examId);
-  if(!result){showToast('Result not found');return;}
-  state._lastResult=result;
-  renderAnalysis(result);
-  showPage('analysis');
-}
-
-function retakeExam(examId) {
-  const result=getLS('nexa_result_'+examId);
-  if(!result){showToast('Exam data not found');return;}
-  // Prefill setup
-  state.parsedJson=result.examConfig._rawJson||null;
-  if(!state.parsedJson&&result.questions){
-    // Reconstruct sections from questions
-    const secMap={};
-    result.questions.forEach(q=>{
-      if(!secMap[q.sectionName]) secMap[q.sectionName]={section:q.sectionName,type:q.secType,questions:[]};
-      secMap[q.sectionName].questions.push({question:q.question,answer:q.answer,options:q.options,diagram:q.diagram});
-    });
-    state.parsedJson=Object.values(secMap);
-  }
-  document.getElementById('exam-name-input').value=result.examConfig.name+' (Retake)';
-  const textarea=document.getElementById('json-textarea');
-  textarea.value=JSON.stringify(state.parsedJson,null,2);
-  validateJson(textarea.value);
-  showStep(1);
-  showPage('setup');
-}
-
-function exportCurrentExam() {
-  if(!state._lastResult){showToast('No result loaded');return;}
-  downloadJson(state._lastResult,'exam-result-'+state._lastResult.id+'.json');
-}
-
-function exportAllExams() {
-  const history=getLS('nexa_exam_history')||[];
-  const all=history.map(h=>getLS('nexa_result_'+h.id)).filter(Boolean);
-  downloadJson({history,results:all},'nexatest-all-exams.json');
-}
-
-function downloadJson(data,filename) {
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download=filename;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast('Downloaded '+filename);
+  document.getElementById('analysis-review-list').innerHTML = html;
+  setTimeout(() => { const rv=document.getElementById('analysis-review-list'); if(rv) renderMath(rv); }, 100);
 }
 
 // ===================== INIT =====================
-document.addEventListener('DOMContentLoaded', ()=>{
+document.addEventListener('DOMContentLoaded', () => {
   loadHomeHistory();
-
-  // Check for active session
-  const sess=getLS('nexa_active_session');
-  if(sess&&sess.questions){
-    if(confirm('You have an unfinished exam. Continue?')){
-      restoreSession();
-      return;
-    } else {
-      clearSession();
-    }
+  const sess = getLS('nexa_active_session');
+  if (sess && sess.questions) {
+    if (confirm('You have an unfinished exam. Continue?')) { restoreSession(); return; }
+    else clearSession();
   }
-
-  // KaTeX auto-render when loaded
-  document.addEventListener('katex-ready',()=>{
-    if(state.currentPage==='exam') {
-      const ql=document.getElementById('exam-left');
-      if(ql) renderMath(ql);
-    }
-  });
 });
 
-// Poll for KaTeX load
-const katexPoll=setInterval(()=>{
-  if(window.renderMathInElement){
-    clearInterval(katexPoll);
-    document.dispatchEvent(new Event('katex-ready'));
-  }
-},100);
-
+const katexPoll = setInterval(()=>{ if(window.renderMathInElement){ clearInterval(katexPoll); } }, 100);
 </script>
 </body>
 </html>
