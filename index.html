@@ -680,7 +680,22 @@ label { font-size: 13px; color: var(--text-secondary); display: block; margin-bo
         <span style="font-size:12px;color:var(--text-secondary)">Copy and paste this into any AI model:</span>
         <button class="btn btn-ghost btn-sm" onclick="copyAiPrompt()">Copy Prompt</button>
       </div>
-      <div class="ai-prompt-text" id="ai-prompt-text">Generate JEE Advanced questions in the following JSON format. Use KaTeX inline math notation with single dollar signs for inline equations ($x^2 + y^2$) and double dollar signs for block equations ($$\int_0^\infty$$). For single answer MCQ use type 'single' with answer as the correct option_id string. For multiple correct use type 'multiple' with answer as array of option_id strings. For numerical use type 'numerical' with answer as number or decimal string. Include diagram field only if needed as a direct image URL. Make sure all LaTeX is valid KaTeX syntax. Return only the raw JSON array, no explanation, no markdown code fences.</div>
+      <div class="ai-prompt-text" id="ai-prompt-text">
+        <pre>[{
+  "section": "Section name",
+  "type": "single | multiple | numerical",
+  "questions": [{
+    "question": "Question text with $inline math$ support",
+    "diagram": "url (optional)",
+    "answer": "A or [A,C] or 3.14",
+    "options": [{
+      "option_id": "A",
+      "option": "Option text with $math$",
+      "diagram": "url (optional)"
+    }]
+  }]
+}]</pre>
+        Generate JEE Advanced questions in the following JSON format. Use KaTeX inline math notation with single dollar signs for inline equations ($x^2 + y^2$) and double dollar signs for block equations ($$\int_0^\infty$$). For single answer MCQ use type 'single' with answer as the correct option_id string. For multiple correct use type 'multiple' with answer as array of option_id strings. For numerical use type 'numerical' with answer as number or decimal string. Include diagram field only if needed as a direct image URL. Make sure all LaTeX is valid KaTeX syntax. Return only the raw JSON array, no explanation, no markdown code fences.</div>
     </div>
 
     <div class="setup-footer">
