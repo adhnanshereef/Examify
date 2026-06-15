@@ -1553,10 +1553,16 @@ function resumeActiveExam() {
 }
 
 function discardActiveExam() {
-  if (confirm("Are you sure you want to discard your progress? This cannot be undone.")) {
-    clearSession();
-    loadHomeHistory();
-  }
+  openDeleteConfirm({
+    title: 'Discard Progress?',
+    message: 'Are you sure you want to discard your progress? This cannot be undone.',
+    confirmText: 'Discard',
+    onConfirm: () => {
+      clearSession();
+      loadHomeHistory();
+      showToast('Progress discarded');
+    }
+  });
 }
 
 function exitExam() {
