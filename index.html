@@ -1349,6 +1349,8 @@ function showAnswerAndNext() {
   const hasAns = resp.answer!==null && resp.answer!=='' && !(Array.isArray(resp.answer)&&!resp.answer.length);
   if (hasAns) resp.status='answered';
   
+  recordTimeOnCurrentQuestion();
+  
   renderCheckedState();
   
   let isAnsCorrect = false;
@@ -1407,6 +1409,8 @@ function startTimer() {
   state.timer = setInterval(tickTimer, 1000);
 }
 function tickTimer() {
+  if (state.showingAnswer && state.showAnswerAfterEach) return;
+  
   if (state.timerDirection==='down') {
     if (state.timerSeconds <= 0 && state.timeMode === 'perq') return;
     state.timerSeconds--;
@@ -1419,6 +1423,7 @@ function tickTimer() {
            showAnswerAndNext();
         } else {
            renderActions();
+           recordTimeOnCurrentQuestion();
         }
         updateTimerDisplay();
         saveSession();
@@ -1433,8 +1438,8 @@ function updateTimerDisplay() {
   const el = document.getElementById('timer-display');
   if (!el) return;
   el.textContent = formatTime(state.timerSeconds);
+  el.className = 'timer-display';
   if (state.timerDirection==='down') {
-    el.className='timer-display';
     if (state.timerSeconds<60) el.classList.add('danger');
     else if (state.timerSeconds<300) el.classList.add('warning');
   }
@@ -1467,7 +1472,14 @@ function calculateResult() {
   const ms = state.markingScheme;
   let totalScore=0, totalCorrect=0, totalWrong=0, totalSkip=0;
   const sections = {};
-  const totalTime = state.timerDirection==='up' ? state.timerSeconds : (state.examConfig.timeMode==='total' ? (parseInt(document.getElementById('total-minutes')?.value||180)*60 - state.timerSeconds) : 0);
+  let totalTime = 0;
+  if (state.timerDirection === 'up') {
+    totalTime = state.timerSeconds;
+  } else if (state.examConfig.timeMode === 'total') {
+    totalTime = (parseInt(document.getElementById('total-minutes')?.value||180)*60) - state.timerSeconds;
+  } else if (state.examConfig.timeMode === 'perq') {
+    totalTime = Object.values(state.questionTimes).reduce((sum, t) => sum + (t || 0), 0);
+  }
 
   state.questions.forEach((q,i) => {
     const resp = state.responses[i];
