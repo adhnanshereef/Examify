@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Examify — JEE Advanced Mock Platform</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico" >
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -378,6 +379,7 @@ label { font-size: 13px; color: var(--text-secondary); display: block; margin-bo
       </button>
       <input type="file" id="import-file-input" accept=".json" style="display:none" onchange="handleImportFile(event)">
     </div>
+    <div id="active-exam-container"></div>
     <div class="exam-list-header">
       <span class="exam-list-title">Your Exams</span>
       <button class="btn btn-ghost btn-sm" onclick="exportAllExams()">Export All</button>
@@ -549,6 +551,7 @@ label { font-size: 13px; color: var(--text-secondary); display: block; margin-bo
       <div id="palette-sections"></div>
       <div class="palette-summary" id="palette-summary"></div>
       <div class="submit-btn-wrap">
+        <button class="btn btn-ghost" style="width:100%; margin-bottom: 8px;" onclick="exitExam()">Exit without Submitting</button>
         <button class="btn btn-danger" style="width:100%" onclick="showSubmitModal()">Submit Exam</button>
       </div>
     </div>
@@ -680,6 +683,34 @@ function goToSetup() {
 }
 
 function loadHomeHistory() {
+  const sess = getLS('nexa_active_session');
+  const activeContainer = document.getElementById('active-exam-container');
+  if (sess && sess.questions) {
+    const answered = Object.values(sess.responses).filter(r=>r.answer!==null&&r.answer!==''&&!(Array.isArray(r.answer)&&!r.answer.length)).length;
+    if (activeContainer) {
+      activeContainer.innerHTML = `
+        <div class="exam-list-header"><span class="exam-list-title">Active Exam</span></div>
+        <div class="exam-group" style="margin-bottom: 30px;">
+          <div class="exam-group-header" style="border-radius: 14px; border-bottom-color: var(--border); cursor: default;">
+            <div style="min-width:0">
+              <div class="exam-group-name">${escHtml(sess.examConfig.name)}</div>
+              <div style="display:flex;gap:12px;margin-top:4px;align-items:center">
+                <div class="exam-group-meta">${answered} / ${sess.questions.length} Answered</div>
+              </div>
+            </div>
+            <div class="exam-group-actions">
+              <button class="btn btn-primary btn-sm" onclick="resumeActiveExam()">Resume Exam</button>
+              <button class="btn btn-ghost btn-sm" onclick="discardActiveExam()">Discard</button>
+            </div>
+          </div>
+        </div>
+      `;
+      activeContainer.style.display = 'block';
+    }
+  } else {
+    if (activeContainer) activeContainer.style.display = 'none';
+  }
+
   const el = document.getElementById('exam-history-list');
   // groups = {templateId: {name, sections, takes:[...]}}
   const templates = getLS('nexa_templates') || {};
@@ -1105,30 +1136,58 @@ function renderQuestion(idx) {
   state.showingAnswer = false;
   const q = state.questions[idx];
   if (!q) return;
-  if (state.responses[idx].status === 'not-visited') state.responses[idx].status = 'not-answered';
+  const resp = state.responses[idx];
+  if (resp.status === 'not-visited') resp.status = 'not-answered';
   document.getElementById('q-number').textContent = `Q${idx+1} of ${state.questions.length} — ${q.sectionName}`;
   const typeTag = document.getElementById('q-type-tag');
   typeTag.className = 'tag';
   if (q.secType==='single') { typeTag.textContent='Single Correct'; typeTag.classList.add('tag-single'); }
   else if (q.secType==='multiple') { typeTag.textContent='Multiple Correct'; typeTag.classList.add('tag-multiple'); }
   else { typeTag.textContent='Numerical'; typeTag.classList.add('tag-numerical'); }
+  
+  const oldSol = document.getElementById('q-solution-area');
+  if (oldSol) oldSol.remove();
+
   const qText = document.getElementById('q-text');
   qText.textContent = q.question; renderMath(qText);
   const qDiag = document.getElementById('q-diagram');
   if (q.diagram) { qDiag.src=q.diagram; qDiag.style.display='block'; } else { qDiag.style.display='none'; }
   renderInputArea(q, idx);
   updatePalette();
-  if (state.timeMode==='perq') state.timerSeconds = state._perqSeconds;
+
+  if (state.timeMode==='perq') {
+    let timeSpent = state.questionTimes[idx] || 0;
+    state.timerSeconds = Math.max(0, state._perqSeconds - timeSpent);
+    if (state.timerSeconds <= 0) {
+      state.showingAnswer = true;
+    }
+  }
+  if (state.showAnswerAfterEach && resp.checked) {
+    state.showingAnswer = true;
+  }
+
   renderActions();
   startQuestionTimer();
+
+  if (state.showingAnswer && state.showAnswerAfterEach) {
+    renderCheckedState();
+  }
 }
 
 function renderActions() {
   const actEl = document.getElementById('question-actions');
-  if (state.showAnswerAfterEach) {
-    actEl.innerHTML = `<button class="btn btn-primary" onclick="showAnswerAndNext()">Check &amp; Next</button><button class="btn btn-ghost" onclick="markForReview()">Mark for Review</button><button class="btn btn-ghost" onclick="clearResponse()" style="color:var(--danger)">Clear</button>`;
+  if (state.showingAnswer) {
+    if (state.showAnswerAfterEach) {
+      actEl.innerHTML = `<button class="btn btn-primary" onclick="navigateNext()">Next →</button>`;
+    } else {
+      actEl.innerHTML = `<button class="btn btn-primary" onclick="navigateNext()">Next →</button><span style="font-size:13px;color:var(--text-secondary);align-self:center">Time's up!</span>`;
+    }
   } else {
-    actEl.innerHTML = `<button class="btn btn-primary" onclick="saveAndNext()">Save &amp; Next</button><button class="btn btn-ghost" onclick="markForReview()">Mark for Review</button><button class="btn btn-ghost" onclick="clearResponse()" style="color:var(--danger)">Clear Response</button>`;
+    if (state.showAnswerAfterEach) {
+      actEl.innerHTML = `<button class="btn btn-primary" onclick="showAnswerAndNext()">Check &amp; Next</button><button class="btn btn-ghost" onclick="markForReview()">Mark for Review</button><button class="btn btn-ghost" onclick="clearResponse()" style="color:var(--danger)">Clear</button>`;
+    } else {
+      actEl.innerHTML = `<button class="btn btn-primary" onclick="saveAndNext()">Save &amp; Next</button><button class="btn btn-ghost" onclick="markForReview()">Mark for Review</button><button class="btn btn-ghost" onclick="clearResponse()" style="color:var(--danger)">Clear Response</button>`;
+    }
   }
 }
 
@@ -1164,6 +1223,7 @@ function renderInputArea(q, idx) {
 
 let _numCurrent = '';
 function numpadPress(key) {
+  if (state.showingAnswer) return;
   const idx = state.currentQuestionIdx, resp = state.responses[idx];
   let cur = _numCurrent;
   if (key==='⌫') cur=cur.slice(0,-1);
@@ -1214,11 +1274,8 @@ function saveAndNext() {
   saveSession(); navigateNext();
 }
 
-function showAnswerAndNext() {
+function renderCheckedState() {
   const idx = state.currentQuestionIdx, q = state.questions[idx], resp = state.responses[idx];
-  state.showingAnswer = true;
-  const hasAns = resp.answer!==null && resp.answer!=='' && !(Array.isArray(resp.answer)&&!resp.answer.length);
-  if (hasAns) resp.status='answered';
   if (q.secType==='single'||q.secType==='multiple') {
     const correct = Array.isArray(q.answer)?q.answer:[q.answer];
     document.querySelectorAll('.option-btn').forEach(btn => {
@@ -1227,8 +1284,86 @@ function showAnswerAndNext() {
       if (correct.includes(id)) btn.classList.add('correct');
       else if ((Array.isArray(resp.answer)?resp.answer:[resp.answer]).includes(id)) btn.classList.add('wrong');
     });
+  } else {
+    const d = document.getElementById('num-display');
+    if (d) {
+      const hasAns = resp.answer!==null && resp.answer!=='' && !(Array.isArray(resp.answer)&&!resp.answer.length);
+      const isCorrect = hasAns && Math.abs(parseFloat(resp.answer)-parseFloat(q.answer)) <= 0.01;
+      let html = '';
+      if (hasAns) {
+        if (isCorrect) {
+          html = `<span style="color:var(--success)">${resp.answer}</span>`;
+        } else {
+          html = `<span style="color:var(--danger)">${resp.answer}</span> <span style="font-size:16px;color:var(--text-secondary)">(Correct Answer: ${q.answer})</span>`;
+        }
+      } else {
+        html = `<span style="color:var(--text-secondary)">Not Answered</span> <span style="font-size:16px;color:var(--text-secondary)">(Correct Answer: ${q.answer})</span>`;
+      }
+      d.innerHTML = html;
+    }
   }
+  
+  if (q.solution && !document.getElementById('q-solution-area')) {
+    const solEl = document.createElement('div');
+    solEl.id = 'q-solution-area';
+    solEl.style.cssText = 'margin-top:20px;padding:14px;background:rgba(108,99,255,0.08);border-radius:8px;border:1px solid var(--accent-glow);font-size:14px;color:var(--text-secondary)';
+    solEl.innerHTML = `<strong style="color:var(--accent)">Solution:</strong> <span>${q.solution}</span>`;
+    document.getElementById('exam-left').appendChild(solEl);
+    renderMath(solEl);
+  }
+
   document.getElementById('question-actions').innerHTML = `<button class="btn btn-primary" onclick="navigateNext()">Next →</button><span style="font-size:13px;color:var(--text-secondary);align-self:center">Correct: ${Array.isArray(q.answer)?q.answer.join(', '):q.answer}</span>`;
+}
+
+function triggerCelebration() {
+  const colors = ['#4CAF50', '#81c784', '#66bb6a', '#a5d6a7'];
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.style.position = 'fixed';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.top = -20 + 'px';
+    el.style.width = Math.random() * 8 + 6 + 'px';
+    el.style.height = el.style.width;
+    el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.pointerEvents = 'none';
+    el.style.zIndex = '9999';
+    const duration = Math.random() * 1.5 + 1.5;
+    el.style.transition = `transform ${duration}s linear, opacity ${duration}s ease-in`;
+    document.body.appendChild(el);
+    
+    el.getBoundingClientRect(); // trigger reflow
+    
+    const rot = Math.random() * 720;
+    el.style.transform = `translateY(100vh) rotate(${rot}deg)`;
+    el.style.opacity = '0';
+    
+    setTimeout(() => el.remove(), duration * 1000);
+  }
+}
+
+function showAnswerAndNext() {
+  const idx = state.currentQuestionIdx, q = state.questions[idx], resp = state.responses[idx];
+  state.showingAnswer = true;
+  resp.checked = true;
+  const hasAns = resp.answer!==null && resp.answer!=='' && !(Array.isArray(resp.answer)&&!resp.answer.length);
+  if (hasAns) resp.status='answered';
+  
+  renderCheckedState();
+  
+  let isAnsCorrect = false;
+  if (hasAns) {
+    if (q.secType==='single') { isAnsCorrect = resp.answer===String(q.answer); }
+    else if (q.secType==='multiple') {
+      const correct=[...(Array.isArray(q.answer)?q.answer:[q.answer])].sort();
+      const given=[...(Array.isArray(resp.answer)?resp.answer:[resp.answer])].sort();
+      isAnsCorrect = JSON.stringify(correct)===JSON.stringify(given);
+    } else {
+      isAnsCorrect = Math.abs(parseFloat(resp.answer)-parseFloat(q.answer)) <= 0.01;
+    }
+  }
+  if (isAnsCorrect) triggerCelebration();
+  
   saveSession();
 }
 
@@ -1273,8 +1408,24 @@ function startTimer() {
 }
 function tickTimer() {
   if (state.timerDirection==='down') {
+    if (state.timerSeconds <= 0 && state.timeMode === 'perq') return;
     state.timerSeconds--;
-    if (state.timerSeconds <= 0) { clearInterval(state.timer); showTimerWarning(); return; }
+    if (state.timerSeconds <= 0) {
+      if (state.timeMode === 'perq') {
+        state.timerSeconds = 0;
+        state.showingAnswer = true;
+        if (state.showAnswerAfterEach) {
+           state.responses[state.currentQuestionIdx].checked = true;
+           showAnswerAndNext();
+        } else {
+           renderActions();
+        }
+        updateTimerDisplay();
+        saveSession();
+        return;
+      }
+      clearInterval(state.timer); showTimerWarning(); return; 
+    }
   } else { state.timerSeconds++; }
   updateTimerDisplay(); saveSession();
 }
@@ -1395,6 +1546,25 @@ function restoreSession() {
   renderQuestion(state.currentQuestionIdx);
   startTimer(); startQuestionTimer();
   return true;
+}
+
+function resumeActiveExam() {
+  restoreSession();
+}
+
+function discardActiveExam() {
+  if (confirm("Are you sure you want to discard your progress? This cannot be undone.")) {
+    clearSession();
+    loadHomeHistory();
+  }
+}
+
+function exitExam() {
+  clearInterval(state.timer);
+  recordTimeOnCurrentQuestion();
+  saveSession();
+  showPage('home');
+  loadHomeHistory();
 }
 
 // ===================== RETAKE =====================
@@ -1523,11 +1693,6 @@ function renderAnalysis(result) {
 // ===================== INIT =====================
 document.addEventListener('DOMContentLoaded', () => {
   loadHomeHistory();
-  const sess = getLS('nexa_active_session');
-  if (sess && sess.questions) {
-    if (confirm('You have an unfinished exam. Continue?')) { restoreSession(); return; }
-    else clearSession();
-  }
 });
 
 const katexPoll = setInterval(()=>{ if(window.renderMathInElement){ clearInterval(katexPoll); } }, 100);
