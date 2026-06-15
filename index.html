@@ -1128,7 +1128,11 @@ function recordTimeOnCurrentQuestion() {
 }
 
 function startQuestionTimer() {
-  state._qEnteredAt = Date.now();
+  if (state.showingAnswer) {
+    state._qEnteredAt = null;
+  } else {
+    state._qEnteredAt = Date.now();
+  }
 }
 
 // ===================== RENDER QUESTION =====================
@@ -1172,6 +1176,7 @@ function renderQuestion(idx) {
   if (state.showingAnswer && state.showAnswerAfterEach) {
     renderCheckedState();
   }
+  updateTimerDisplay();
 }
 
 function renderActions() {
