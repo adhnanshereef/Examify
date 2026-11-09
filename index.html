@@ -655,6 +655,17 @@ function renderMath(el) {
     renderMathInElement(el, { delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], throwOnError:false });
   }
 }
+function renderMathValue(el, value) {
+  if (!el) return;
+  const text = String(value ?? '');
+  el.textContent = text;
+  if (!window.katex) return;
+  if (/\$\$[\s\S]*\$\$|\$[^$]+\$/.test(text)) {
+    renderMath(el);
+  } else if (/\\[a-zA-Z]+/.test(text)) {
+    katex.render(text, el, { throwOnError:false, displayMode:false });
+  }
+}
 function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function formatTime(secs) {
   secs = Math.max(0, Math.round(secs));
@@ -1204,11 +1215,11 @@ function renderInputArea(q, idx) {
     area.innerHTML = `<div class="options-grid">${q.options.map(o=>`
       <button class="option-btn" id="opt-${o.option_id}" onclick="selectOption('${o.option_id}',${idx})">
         <span class="option-id">${o.option_id}</span>
-        <span class="option-text" id="opt-text-${o.option_id}">${o.option}</span>
+        <span class="option-text" id="opt-text-${o.option_id}"></span>
       </button>`).join('')}</div>`;
     q.options.forEach(o => {
       const el = document.getElementById('opt-text-'+o.option_id);
-      if (el) renderMath(el);
+      renderMathValue(el, o.option);
       if (o.diagram) { const img=document.createElement('img'); img.src=o.diagram; img.style.cssText='max-width:100%;border-radius:6px;margin-top:8px;'; if(el) el.appendChild(img); }
     });
     if (resp.answer) {
@@ -1695,7 +1706,7 @@ function renderAnalysis(result) {
               const isYours = Array.isArray(resp.answer)?resp.answer.includes(o.option_id):resp.answer===o.option_id;
               return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;border:1px solid ${isCorrect?'var(--success)':isYours&&!isCorrect?'var(--danger)':'var(--border)'};background:${isCorrect?'rgba(76,175,80,0.1)':isYours&&!isCorrect?'rgba(244,67,54,0.08)':'var(--surface)'}">
                 <span style="font-weight:700;color:${isCorrect?'var(--success)':isYours&&!isCorrect?'var(--danger)':'var(--text-secondary)'}">${o.option_id}</span>
-                <span id="rv-opt-${gIdx}-${o.option_id}" style="font-size:14px">${o.option}</span>
+                <span id="rv-opt-${gIdx}-${o.option_id}" style="font-size:14px"></span>
                 ${isCorrect?'<span style="margin-left:auto;color:var(--success);font-size:12px">✓</span>':''}
                 ${isYours&&!isCorrect?'<span style="margin-left:auto;color:var(--danger);font-size:12px">✗</span>':''}
               </div>`;
@@ -1711,6 +1722,11 @@ function renderAnalysis(result) {
     });
   });
   document.getElementById('analysis-review-list').innerHTML = html;
+  let reviewQuestionIndex = 0;
+  Object.values(result.sections).forEach(data => data.questions.forEach(({q}) => {
+    if (q.options) q.options.forEach(o => renderMathValue(document.getElementById(`rv-opt-${reviewQuestionIndex}-${o.option_id}`), o.option));
+    reviewQuestionIndex++;
+  }));
   setTimeout(() => { const rv=document.getElementById('analysis-review-list'); if(rv) renderMath(rv); }, 100);
 }
 
